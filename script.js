@@ -8,6 +8,17 @@ const IMG_INDIA = "images/india.png";
 
 const CORRECT_PW = "wedding2026";
 
+  function unlockSite() {
+    const gate = document.getElementById("gate");
+    gate.style.transition = "opacity 0.6s ease";
+    gate.style.opacity = "0";
+    setTimeout(() => {
+      gate.style.display = "none";
+      document.getElementById("site").classList.add("visible");
+      initScroll();
+    }, 600);
+  }
+
   window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("img-haldi").src     = IMG_HALDI;
     document.getElementById("img-mehndi").src    = IMG_MEHNDI;
@@ -16,31 +27,32 @@ const CORRECT_PW = "wedding2026";
     document.getElementById("img-lagan").src     = IMG_LAGAN;
     document.getElementById("img-reception").src = IMG_RECEPTION;
     document.getElementById("img-india").src     = IMG_INDIA;
+
+    // Already unlocked this browser session — skip the gate
+    if (sessionStorage.getItem("siteUnlocked") === "1") {
+      document.getElementById("gate").style.display = "none";
+      document.getElementById("site").classList.add("visible");
+      initScroll();
+      return;
+    }
+
+    document.getElementById("pw-input").addEventListener("keydown", e => {
+      if (e.key === "Enter") checkPw();
+      document.getElementById("pw-error").textContent = "";
+    });
   });
 
   function checkPw() {
     const val = document.getElementById("pw-input").value.trim();
     if (val === CORRECT_PW) {
-      const gate = document.getElementById("gate");
-      gate.style.transition = "opacity 0.6s ease";
-      gate.style.opacity = "0";
-      setTimeout(() => {
-        gate.style.display = "none";
-        document.getElementById("site").classList.add("visible");
-        initScroll();
-      }, 600);
+      sessionStorage.setItem("siteUnlocked", "1");
+      unlockSite();
     } else {
       document.getElementById("pw-error").textContent = "Incorrect password — please try again.";
       document.getElementById("pw-input").value = "";
       document.getElementById("pw-input").focus();
     }
   }
-  document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("pw-input").addEventListener("keydown", e => {
-      if (e.key === "Enter") checkPw();
-      document.getElementById("pw-error").textContent = "";
-    });
-  });
 
   window.addEventListener("scroll", () => {
     document.getElementById("nav").classList.toggle("scrolled", window.scrollY > 50);

@@ -140,7 +140,7 @@
 
     /* Hotel card — hotel.png background with overlay */
     .tm-hotel { grid-area: hotel; background-image: url("images/hotel.png"); background-size: cover; background-position: center; position: relative; padding: 2.5rem 2.75rem; }
-    .tm-hotel::before { content: ""; position: absolute; inset: 0; background: rgba(40,6,12,0.72); }
+    .tm-hotel::before { content: ""; position: absolute; inset: 0; background: rgba(20,3,6,0.86); }
     .tm-hotel > * { position: relative; z-index: 1; }
     .tm-label { font-family: "Cormorant Garamond", serif; font-size: 0.65rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold-light); display: block; margin-bottom: 0.4rem; }
     .tm-title { font-family: "Cormorant Garamond", serif; font-size: 1.75rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem; }
