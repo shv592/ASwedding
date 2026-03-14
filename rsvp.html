@@ -586,16 +586,15 @@
     <!-- ── STEP 1b: VERIFY IDENTITY ──────────────────────── -->
     <div class="rsvp-step" id="step-verify">
       <div class="rsvp-card">
-        <span class="step-eye">Confirm Your Name</span>
-        <div class="step-head">Is this you?</div>
+        <span class="step-eye">Confirm Your Invitation</span>
+        <div class="step-head">Is this your family?</div>
         <div class="step-rule"></div>
-        <p class="step-sub">We found the following guest(s) under that name:</p>
+        <p class="step-sub">We found the following family members on the guest list. You will be able to RSVP on behalf of your whole family — please confirm this is the right group.</p>
         <div id="verify-names"></div>
         <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
-          <button class="search-btn" onclick="confirmIdentity(true)">Yes, that&rsquo;s me</button>
-          <button class="search-btn" onclick="confirmIdentity(false)" style="border-color:var(--text-light);color:var(--text-light);">No, that&rsquo;s not me</button>
+          <button class="search-btn" onclick="confirmIdentity(true)">Yes, this is my family</button>
+          <button class="search-btn" onclick="confirmIdentity(false)" style="border-color:var(--text-light);color:var(--text-light);">No, this isn&rsquo;t me</button>
         </div>
-        <div class="search-error" id="verify-error"></div>
         <div style="text-align:center;margin-top:1.5rem;">
           <span class="back-link" onclick="showStep('step-search')">&#8592; Search again</span>
         </div>
@@ -848,8 +847,9 @@ function confirmIdentity(yes) {
     buildForm(_pendingWelcomeName, _groupData);
     showStep('step-form');
   } else {
-    document.getElementById('verify-error').textContent =
-      'We\u2019re sorry — please try searching again with a different name or spelling.';
+    showStep('step-search');
+    var errorEl = document.getElementById('search-error');
+    errorEl.textContent = 'No problem — please try searching with a different name or spelling.';
   }
 }
 
