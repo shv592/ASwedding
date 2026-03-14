@@ -61,6 +61,6 @@ const CORRECT_PW = "wedding2026";
         }
       });
     }, { threshold: 0.08 });
-    document.querySelectorAll(".event-card").forEach((el,i) => { el.dataset.delay = i*80; io.observe(el); });
-    document.querySelectorAll(".tip-card").forEach((el,i)  => { el.dataset.delay = i*100; io.observe(el); });
+    document.querySelectorAll(".event-card").forEach((el,i) => { el.dataset.delay = i*80;  io.observe(el); });
+    document.querySelectorAll(".tm-panel").forEach((el,i)  => { el.dataset.delay = i*100; io.observe(el); });
   }

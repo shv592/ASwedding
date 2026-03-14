@@ -112,23 +112,60 @@
     .events-grid--one { grid-template-columns: repeat(3, 1fr); }
     .events-grid--one .event-card { grid-column: 1 / 2; }
 
-    /* ══ TRAVEL ══ */
-    #travel { padding: 6rem 2rem; background: var(--warm-white); }
-    .travel-layout { display: grid; grid-template-columns: 380px 1fr; gap: 3rem; align-items: start; }
-    .travel-banner { width: 100%; height: 600px; background-image: url("images/travel.png"); background-size: cover; background-position: center center; display: block; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
-    .travel-content { display: flex; flex-direction: column; gap: 2rem; }
-    .hotel-box { border: 1px solid var(--border); background: var(--cream); padding: 2.5rem 3rem; margin-bottom: 2.5rem; position: relative; }
-    .hotel-box::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--crimson), var(--gold)); }
-    .hotel-box h3 { font-family: "Cormorant Garamond", serif; font-size: 1.5rem; font-weight: 500; color: var(--crimson); margin-bottom: 0.65rem; }
-    .hotel-box p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.05rem; color: var(--text-mid); line-height: 1.8; margin-bottom: 0.75rem; }
-    .code-badge { display: inline-block; background: var(--crimson); color: #fff; font-family: "Raleway", sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; padding: 0.3rem 1rem; }
-    .hotel-link { display: inline-block; margin-top: 1rem; font-family: "Cormorant Garamond", serif; font-size: 1rem; color: var(--crimson); text-decoration: none; border-bottom: 1px solid rgba(139,26,43,0.2); }
-    .tips-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-    .tip-card { background: var(--cream); border: 1px solid var(--border); padding: 2rem; opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
-    .tip-card.in-view { opacity: 1; transform: none; }
-    .tip-n { font-family: "Cormorant Garamond", serif; font-size: 2.5rem; font-weight: 300; color: rgba(139,26,43,0.1); line-height: 1; margin-bottom: 0.4rem; }
-    .tip-card h4 { font-family: "Cormorant Garamond", serif; font-size: 1.15rem; font-weight: 500; color: var(--crimson); margin-bottom: 0.55rem; }
-    .tip-card p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1rem; color: var(--text-mid); line-height: 1.8; }
+    /* ══ TRAVEL (mosaic) ══ */
+    #travel { padding: 0; background: var(--warm-white); }
+    .travel-header { max-width: 1200px; margin: 0 auto; padding: 6rem 2rem 3rem; }
+
+    .travel-mosaic {
+      display: grid;
+      grid-template-columns: 1.8fr 1.5fr 1.5fr;
+      grid-template-rows: auto auto auto;
+      grid-template-areas:
+        "photo  hotel   hotel"
+        "photo  flying  venue"
+        "bridge around  todo";
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+      gap: 1.5rem;
+    }
+
+    /* Photo panels */
+    .tm-photo  { grid-area: photo;  background-image: url("images/travel.png"); background-size: cover; background-position: center; min-height: 560px; }
+    .tm-bridge { grid-area: bridge; background-image: url("images/bridge.png"); background-size: cover; background-position: center; min-height: 240px; }
+
+    /* Shared panel animation */
+    .tm-panel { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .tm-panel.in-view { opacity: 1; transform: none; }
+
+    /* Hotel card — hotel.png background with overlay */
+    .tm-hotel { grid-area: hotel; background-image: url("images/hotel.png"); background-size: cover; background-position: center; position: relative; padding: 2.5rem 2.75rem; }
+    .tm-hotel::before { content: ""; position: absolute; inset: 0; background: rgba(40,6,12,0.72); }
+    .tm-hotel > * { position: relative; z-index: 1; }
+    .tm-label { font-family: "Cormorant Garamond", serif; font-size: 0.65rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold-light); display: block; margin-bottom: 0.4rem; }
+    .tm-title { font-family: "Cormorant Garamond", serif; font-size: 1.75rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem; }
+    .tm-divider { width: 35px; height: 1px; background: var(--gold); margin-bottom: 1.2rem; }
+    .tm-hotel p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.02rem; color: rgba(255,255,255,0.78); line-height: 1.8; margin-bottom: 0.9rem; }
+    .tm-code { display: inline-block; border: 1px solid var(--gold); color: var(--gold-light); font-family: "Raleway", sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; padding: 0.3rem 1rem; margin-bottom: 0.9rem; }
+    .tm-warning { font-size: 0.95rem !important; color: rgba(255,255,255,0.55) !important; }
+    .tm-book-link { display: inline-block; font-family: "Cormorant Garamond", serif; font-size: 1rem; color: var(--gold-light); text-decoration: none; border-bottom: 1px solid rgba(201,168,76,0.4); transition: border-color 0.2s, color 0.2s; }
+    .tm-book-link:hover { color: #fff; border-color: rgba(201,168,76,0.8); }
+
+    /* Info cards */
+    .tm-info { background: var(--cream); border: 1px solid var(--border); padding: 2rem 2.25rem; }
+    .tm-flying { grid-area: flying; }
+    .tm-venue  { grid-area: venue; }
+    .tm-around { grid-area: around; background: rgba(201,168,76,0.05); }
+    .tm-todo   { grid-area: todo; background: var(--warm-white); }
+    .tm-num { font-family: "Cormorant Garamond", serif; font-size: 3rem; font-weight: 300; color: rgba(139,26,43,0.07); line-height: 1; margin-bottom: 0.2rem; }
+    .tm-info h4 { font-family: "Cormorant Garamond", serif; font-size: 1.2rem; font-weight: 500; color: var(--crimson); margin-bottom: 0.7rem; }
+    .tm-info p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1rem; color: var(--text-mid); line-height: 1.8; }
+    .tm-address { font-family: "Cormorant Garamond", serif; font-size: 1rem; color: var(--text-mid); font-style: normal; line-height: 1.9; }
+    .tm-phone { font-family: "Raleway", sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold); margin-top: 0.6rem; }
+    .tm-list { list-style: none; padding: 0; margin-top: 0.25rem; }
+    .tm-list li { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1rem; color: var(--text-mid); padding: 0.45rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 0.5rem; }
+    .tm-list li:last-child { border-bottom: none; }
+    .tm-list li::before { content: "◆"; color: var(--gold); font-size: 0.38rem; flex-shrink: 0; }
 
     /* ══ RSVP ══ */
     #rsvp { padding: 6rem 2rem; text-align: center; position: relative; overflow: hidden; background-image: url("images/rsvp-bg.png"); background-size: cover; background-position: center top; }
@@ -167,7 +204,17 @@
       #hero { padding: 7rem 1.5rem 4rem; }
       #hero::after { inset: 1rem; }
       .events-grid { grid-template-columns: 1fr; }
-      .tips-grid { grid-template-columns: 1fr; }
+      .travel-mosaic {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "photo  photo"
+          "hotel  hotel"
+          "flying venue"
+          "bridge bridge"
+          "around todo";
+      }
+      .tm-photo { min-height: 300px; }
+      .tm-bridge { min-height: 220px; }
     }
     @media(min-width:640px) and (max-width:900px) {
       .events-grid { grid-template-columns: 1fr 1fr; }
@@ -175,10 +222,15 @@
     @media(max-width:640px) {
       nav { padding: 1rem 1.5rem; } nav.scrolled { padding: 0.7rem 1.5rem; }
       .nav-links { display: none; } .hamburger { display: flex; }
-      #schedule, #travel, #faq, #rsvp { padding: 4rem 1.25rem; }
+      #schedule, #faq, #rsvp { padding: 4rem 1.25rem; }
+      .travel-header { padding: 4rem 1.25rem 2rem; }
       .event-img { height: 220px; }
-      .event-single .event-img { height: 260px; }
-      .hotel-box { padding: 1.5rem; }
-      .travel-layout { grid-template-columns: 1fr; }
-      .travel-banner { height: 480px; }
+      .travel-mosaic {
+        grid-template-columns: 1fr;
+        grid-template-areas: "photo" "hotel" "flying" "venue" "bridge" "around" "todo";
+        padding: 0 1.25rem 4rem;
+        gap: 1rem;
+      }
+      .tm-photo { min-height: 260px; }
+      .tm-bridge { min-height: 200px; }
     }
