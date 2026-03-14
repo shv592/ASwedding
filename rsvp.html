@@ -219,6 +219,40 @@
       line-height: 1.85;
     }
 
+    /* ── EMAIL INPUT ─────────────────────────────────────── */
+    .email-row { margin-bottom: 1.5rem; }
+    .email-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      padding: 0.8rem 1rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+      outline: none;
+      margin-top: 0.4rem;
+      transition: border-color 0.25s;
+    }
+    .email-input::placeholder { color: var(--text-light); font-style: italic; }
+    .email-input:focus { border-color: var(--crimson); }
+
+    /* ── MATCH SELECTION BUTTONS ────────────────────────── */
+    .match-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.1rem;
+      color: var(--charcoal);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .match-btn:hover { border-color: var(--crimson); background: var(--cream); color: var(--crimson); }
+
     /* ── STEP 2: RSVP FORM ───────────────────────────────── */
 
     /* Member card */
@@ -234,6 +268,30 @@
       font-weight: 600;
       color: var(--crimson);
       margin-bottom: 1.1rem;
+    }
+    .member-name-input {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--crimson);
+      border: none;
+      border-bottom: 1px dashed rgba(139,26,43,0.3);
+      background: transparent;
+      outline: none;
+      width: 100%;
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.2rem;
+      transition: border-color 0.2s;
+    }
+    .member-name-input:focus { border-bottom-color: var(--crimson); }
+    .member-name-label {
+      font-family: "Raleway", sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      display: block;
+      margin-bottom: 0.2rem;
     }
 
     /* Event row */
@@ -502,13 +560,28 @@
 
         <!-- Open state -->
         <div id="open-state">
+          <p class="step-sub" style="margin-bottom:1.25rem;">You can search by first name, last name, or both.</p>
           <div class="name-row">
-            <input type="text" id="inp-first" placeholder="First Name" autocomplete="given-name"/>
-            <input type="text" id="inp-last"  placeholder="Last Name"  autocomplete="family-name"/>
+            <input type="text" id="inp-first" placeholder="First Name (optional)" autocomplete="given-name"/>
+            <input type="text" id="inp-last"  placeholder="Last Name (optional)"  autocomplete="family-name"/>
           </div>
           <button class="search-btn" id="search-btn" onclick="searchGuest(event)">Find My Invitation</button>
           <div class="search-error" id="search-error"></div>
           <span class="deadline-note">Please RSVP by April 15, 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 1b: MULTIPLE MATCHES ──────────────────────── -->
+    <div class="rsvp-step" id="step-select">
+      <div class="rsvp-card">
+        <span class="step-eye">Select Your Name</span>
+        <div class="step-head">We found a few matches</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">Please select your name from the list below.</p>
+        <div id="matches-container"></div>
+        <div style="text-align:center;margin-top:1.5rem;">
+          <span class="back-link" onclick="showStep('step-search')">&#8592; Search again</span>
         </div>
       </div>
     </div>
@@ -519,6 +592,10 @@
         <div class="step-head" id="form-welcome">Welcome!</div>
         <div class="step-rule"></div>
         <p class="step-sub">Please RSVP for each member of your party.</p>
+        <div class="email-row">
+          <label class="member-name-label" for="inp-email">Your Email Address (optional)</label>
+          <input type="email" id="inp-email" class="email-input" placeholder="email@example.com" autocomplete="email"/>
+        </div>
         <div class="gold-rule"></div>
 
         <!-- Member cards injected here -->
@@ -605,8 +682,8 @@ function searchGuest(e) {
 
   errorEl.textContent = '';
 
-  if (!firstName || !lastName) {
-    errorEl.textContent = 'Please enter both your first and last name.';
+  if (!firstName && !lastName) {
+    errorEl.textContent = 'Please enter at least your first or last name.';
     return;
   }
 
@@ -618,7 +695,7 @@ function searchGuest(e) {
     + '&first=' + encodeURIComponent(firstName)
     + '&last='  + encodeURIComponent(lastName);
 
-  fetch(url)
+  fetch(url, { credentials: 'omit' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
       btn.textContent = 'Find My Invitation';
@@ -631,6 +708,12 @@ function searchGuest(e) {
 
       if (!data.found) {
         errorEl.textContent = 'We couldn\u2019t find your name on the guest list. Please double-check the spelling and try again.';
+        return;
+      }
+
+      if (data.multipleMatches) {
+        buildMatchSelection(data.matches);
+        showStep('step-select');
         return;
       }
 
@@ -668,6 +751,45 @@ function searchGuest(e) {
 document.getElementById('inp-first').addEventListener('keydown', function(e) { if (e.key === 'Enter') searchGuest(e); });
 document.getElementById('inp-last').addEventListener('keydown',  function(e) { if (e.key === 'Enter') searchGuest(e); });
 
+// ── buildMatchSelection ──────────────────────────────────────
+function buildMatchSelection(matches) {
+  var container = document.getElementById('matches-container');
+  container.innerHTML = '';
+  matches.forEach(function(match) {
+    var btn = document.createElement('button');
+    btn.className = 'match-btn';
+    btn.textContent = match.name;
+    btn.onclick = function() { selectMatch(match.groupId); };
+    container.appendChild(btn);
+  });
+}
+
+// ── selectMatch ──────────────────────────────────────────────
+function selectMatch(groupId) {
+  var url = APPS_SCRIPT_URL + '?action=getGroup&groupId=' + encodeURIComponent(groupId);
+  fetch(url, { credentials: 'omit' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.alreadyRsvped) {
+        showStep('step-search');
+        var notice = document.createElement('div');
+        notice.className = 'already-notice';
+        notice.innerHTML = '<p>It looks like your group has already submitted an RSVP. If you need to make changes, please reach out at <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:var(--crimson)">shivani.akshaypathak@hotmail.com</a>.</p>';
+        var prior = document.getElementById('already-notice-el');
+        if (prior) prior.remove();
+        notice.id = 'already-notice-el';
+        document.getElementById('open-state').appendChild(notice);
+        return;
+      }
+      _groupData = data;
+      buildForm(data.members[0].firstName, data);
+      showStep('step-form');
+    })
+    .catch(function() {
+      alert('Network error. Please try again.');
+    });
+}
+
 // ── buildForm ────────────────────────────────────────────────
 function buildForm(firstName, data) {
   // Update welcome heading
@@ -681,10 +803,17 @@ function buildForm(firstName, data) {
     var card = document.createElement('div');
     card.className = 'member-card';
 
-    var nameEl = document.createElement('div');
-    nameEl.className = 'member-name';
-    nameEl.textContent = member.firstName + ' ' + member.lastName;
-    card.appendChild(nameEl);
+    var nameLabel = document.createElement('span');
+    nameLabel.className = 'member-name-label';
+    nameLabel.textContent = 'Name (edit if misspelled)';
+    card.appendChild(nameLabel);
+
+    var nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.className = 'member-name-input';
+    nameInput.value = member.firstName + ' ' + member.lastName;
+    nameInput.dataset.memberIdx = idx;
+    card.appendChild(nameInput);
 
     // One event row per invited event
     member.events.forEach(function(tag) {
@@ -860,10 +989,14 @@ function collectAndSubmit() {
       var active = group.querySelector('.toggle-btn.active, .toggle-btn.active-no');
       rsvp[tag]  = active ? active.dataset.value : 'Yes';
     });
+    var nameInput = document.querySelector('.member-name-input[data-member-idx="' + idx + '"]');
+    var displayName = nameInput ? nameInput.value.trim() : (member.firstName + ' ' + member.lastName);
     return {
-      firstName: member.firstName,
-      lastName:  member.lastName,
-      rsvp:      rsvp,
+      firstName:   member.firstName,
+      lastName:    member.lastName,
+      fullName:    member.fullName,
+      displayName: displayName,
+      rsvp:        rsvp,
     };
   });
 
@@ -888,16 +1021,20 @@ function collectAndSubmit() {
     additionalOut.push({ name: guestName, rsvp: rsvp });
   }
 
+  var emailInput = document.getElementById('inp-email');
+  var email = emailInput ? emailInput.value.trim() : '';
+
   var payload = {
     groupId:          _groupData.groupId,
     submittedBy:      submittedBy,
+    email:            email,
     members:          membersOut,
     additionalGuests: additionalOut,
   };
 
   var url = APPS_SCRIPT_URL + '?action=submit&data=' + encodeURIComponent(JSON.stringify(payload));
 
-  fetch(url)
+  fetch(url, { credentials: 'omit' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.success) {
