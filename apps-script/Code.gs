@@ -4,7 +4,7 @@
 // ============================================================
 
 const SPREADSHEET_ID      = 'YOUR_SPREADSHEET_ID_HERE';
-const MASTER_SHEET_NAME   = 'Formatted Brides List';
+const MASTER_SHEET_NAME   = 'Sheet1';
 const RESPONSE_SHEET_NAME = 'RSVP Responses';
 
 // Column indices (0-based) — matches the Formatted Brides List layout
