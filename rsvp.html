@@ -758,9 +758,35 @@ function buildMatchSelection(matches) {
   matches.forEach(function(match) {
     var btn = document.createElement('button');
     btn.className = 'match-btn';
-    btn.textContent = match.name;
+
+    var nameDiv = document.createElement('div');
+    nameDiv.style.fontWeight = '600';
+    nameDiv.textContent = match.name;
+
+    var familyDiv = document.createElement('div');
+    familyDiv.style.fontSize = '0.88rem';
+    familyDiv.style.color = 'var(--text-mid)';
+    familyDiv.style.marginTop = '0.3rem';
+    familyDiv.style.fontStyle = 'italic';
+    familyDiv.textContent = 'Loading group\u2026';
+
+    btn.appendChild(nameDiv);
+    btn.appendChild(familyDiv);
     btn.onclick = function() { selectMatch(match.groupId); };
     container.appendChild(btn);
+
+    // Fetch this group's members so the user can tell which entry is theirs
+    fetch(APPS_SCRIPT_URL + '?action=getGroup&groupId=' + encodeURIComponent(match.groupId), { credentials: 'omit' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.members && data.members.length > 0) {
+          var names = data.members.map(function(m) { return m.firstName + ' ' + m.lastName; });
+          familyDiv.textContent = 'Party: ' + names.join(', ');
+        } else {
+          familyDiv.textContent = '';
+        }
+      })
+      .catch(function() { familyDiv.textContent = ''; });
   });
 }
 
