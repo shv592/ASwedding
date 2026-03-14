@@ -4,18 +4,38 @@
 // ============================================================
 
 const SPREADSHEET_ID      = '1A31Vkz79SiVJ83m7D3BbtB1ZUIcmeFj7cqnmcUxKDS4';
-const MASTER_SHEET_NAME   = 'Sheet1';
+const MASTER_SHEET_NAME   = 'BothLists';
 const RESPONSE_SHEET_NAME = 'RSVP Responses';
 
-// Column indices (0-based)
-const COL_NAME   = 1;  // B: INDIVIDUALS
-const COL_GROUP  = 3;  // D: GROUP ID
-const COL_EXTRA  = 4;  // E: Extra Persons
-const COL_HALDI  = 8;  // I
-const COL_SANGEET= 9;  // J
-const COL_LAGAN  = 10; // K
-const COL_CANADA = 11; // L
-const COL_INDIA  = 12; // M
+// Column indices (0-based) matching current sheet layout:
+// A(0)  NO
+// B(1)  INDIVIDUALS
+// C(2)  RELATIONSHIP
+// D(3)  GROUP ID
+// E(4)  EXTRA PERSONS
+// F(5)  MILNI
+// G(6)  EMAIL
+// H(7)  PHONE NUMBER
+// I(8)  SAVE DATE SENT
+// J(9)  HALDI
+// K(10) SANGEET
+// L(11) LAGAN
+// M(12) CANADA RECEPTION
+// N(13) INDIA RECEPTION
+// O(14) ROOMS
+// P(15) CANADA ATTENDANCE
+// Q(16) INDIA ATTENDANCE
+// R(17) SIDE  ← new
+// S(18) RSVP Submitted
+const COL_NAME    = 1;
+const COL_GROUP   = 3;
+const COL_EXTRA   = 4;
+const COL_HALDI   = 9;
+const COL_SANGEET = 10;
+const COL_LAGAN   = 11;
+const COL_CANADA  = 12;
+const COL_INDIA   = 13;
+const COL_SIDE    = 17;
 
 // ── CORS / JSON response helper ──────────────────────────────
 function corsResponse(data) {
@@ -164,6 +184,7 @@ function buildGroupResponse(data, groupId, rsvpSubmittedCol) {
       lastName:  nameParts.slice(1).join(' ') || '',
       fullName:  String(data[r][COL_NAME] || '').trim(),
       events:    events,
+      side:      String(data[r][COL_SIDE] || '').trim(),
     });
 
     if (rsvpSubmittedCol !== -1) {
@@ -197,9 +218,9 @@ function handleSubmit(params) {
   if (!respSheet) {
     respSheet = ss.insertSheet(RESPONSE_SHEET_NAME);
     respSheet.appendRow([
-      'Timestamp', 'Group ID', 'Submitted By', 'Email', 'Name', 'Guest Type',
+      'Timestamp', 'Group ID', 'Submitted By', 'Name', 'Guest Type',
       'Haldi & Devgon', 'Mehndi & Sangeet', 'Baraat & Lagan',
-      'Cocktail & Reception', 'India Reception',
+      'Cocktail & Reception', 'India Reception', 'Side',
     ]);
     respSheet.setFrozenRows(1);
     respSheet.getRange(1, 1, 1, 11).setFontWeight('bold');
@@ -210,14 +231,15 @@ function handleSubmit(params) {
   const submittedBy = payload.submittedBy || '';
   const email       = payload.email || '';
 
-  function buildRow(name, guestType, rsvp) {
+  function buildRow(name, guestType, side, rsvp) {
     return [
-      timestamp, groupId, submittedBy, email, name, guestType,
+      timestamp, groupId, submittedBy, name, guestType,
       rsvp['haldi']           || '',
       rsvp['sangeet']         || '',
       rsvp['lagan']           || '',
       rsvp['canadaReception'] || '',
       rsvp['indiaReception']  || '',
+      side,
     ];
   }
 
@@ -226,15 +248,16 @@ function handleSubmit(params) {
   for (let i = 0; i < members.length; i++) {
     const m    = members[i];
     const name = m.displayName || m.fullName || ((m.firstName + ' ' + m.lastName).trim());
-    respSheet.appendRow(buildRow(name, 'Family', m.rsvp || {}));
+    respSheet.appendRow(buildRow(name, 'Family', m.side || '', m.rsvp || {}));
   }
 
-  // Additional guests (skip blank names)
+  // Additional guests (skip blank names) — inherit side from the first member
+  const groupSide  = members.length > 0 ? (members[0].side || '') : '';
   const additional = payload.additionalGuests || [];
   for (let i = 0; i < additional.length; i++) {
     const guestName = (additional[i].name || '').trim();
     if (!guestName) continue;
-    respSheet.appendRow(buildRow(guestName, 'Additional Guest', additional[i].rsvp || {}));
+    respSheet.appendRow(buildRow(guestName, 'Additional Guest', groupSide, additional[i].rsvp || {}));
   }
 
   // Mark RSVP Submitted in master sheet
