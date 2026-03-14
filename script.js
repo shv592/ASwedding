@@ -1,22 +1,14 @@
-const IMG_TRAVEL = "images/travel.jpg";
-const IMG_RSVP_BG = "images/rsvp-bg.jpg";
-const IMG_FAQ_BG = "images/faq-bg.jpg";
-const IMG_GATE_BG = "images/gate-bg.jpg";
-const IMG_WELCOME_BG = "images/welcome-bg.jpg";
-const IMG_HERO_INVITE = "images/hero-invite.jpg";
-const IMG_HALDI = "images/haldi.jpg";
-const IMG_MEHNDI = "images/mehndi.jpg";
-const IMG_SANGEET = "images/sangeet.jpg";
-const IMG_BARAAT = "images/baraat.jpg";
-const IMG_LAGAN = "images/lagan.jpg";
-const IMG_RECEPTION = "images/reception.jpg";
-const IMG_INDIA = "images/india.jpg";
+const IMG_HALDI = "Images/haldi.png";
+const IMG_MEHNDI = "Images/mehndi.png";
+const IMG_SANGEET = "Images/sangeet.png";
+const IMG_BARAAT = "Images/baraat.png";
+const IMG_LAGAN = "Images/lagan.png";
+const IMG_RECEPTION = "Images/reception.png";
+const IMG_INDIA = "Images/india.png";
 
 const CORRECT_PW = "wedding2026";
 
   window.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("gate").style.backgroundImage       = `url(${IMG_GATE_BG})`;
-    document.getElementById("welcome-bg").style.backgroundImage = `url(${IMG_GATE_BG})`;
     document.getElementById("img-haldi").src     = IMG_HALDI;
     document.getElementById("img-mehndi").src    = IMG_MEHNDI;
     document.getElementById("img-sangeet").src   = IMG_SANGEET;
@@ -24,9 +16,6 @@ const CORRECT_PW = "wedding2026";
     document.getElementById("img-lagan").src     = IMG_LAGAN;
     document.getElementById("img-reception").src = IMG_RECEPTION;
     document.getElementById("img-india").src     = IMG_INDIA;
-    document.getElementById("img-travel").style.backgroundImage = `url(${IMG_TRAVEL})`;
-    document.getElementById("rsvp").style.backgroundImage = `url(${IMG_RSVP_BG})`;
-    document.getElementById("faq").style.backgroundImage  = `url(${IMG_FAQ_BG})`;
   });
 
   function checkPw() {

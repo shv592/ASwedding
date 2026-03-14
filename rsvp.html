@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RSVP — Shivani &amp; Akshay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --crimson: #8B1A2B; --crimson-dark: #5c0e1a;
+      --gold: #c9a84c; --gold-light: #e4c97e;
+      --cream: #fdf6ee; --warm-white: #fffaf5;
+      --charcoal: #2a2020; --text-mid: #5a4a42; --text-light: #9a8070;
+      --border: rgba(139,26,43,0.13);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: "Raleway", sans-serif; font-weight: 300; background: var(--warm-white); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(255,250,245,0.97); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: "Great Vibes", cursive; font-size: 1.9rem; color: var(--crimson); text-decoration: none; }
+    .nav-back { font-family: "Cormorant Garamond", serif; font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; color: var(--text-mid); transition: color 0.25s; }
+    .nav-back:hover { color: var(--crimson); }
+
+    /* HERO BANNER */
+    .rsvp-hero { background-image: url("Images/rsvp-bg.png"); background-size: cover; background-position: center top; position: relative; padding: 6rem 2rem 5rem; text-align: center; }
+    .rsvp-hero::before { content: ""; position: absolute; inset: 0; background: rgba(55,8,14,0.83); }
+    .rsvp-hero-inner { position: relative; z-index: 1; }
+    .rsvp-eye { font-family: "Cormorant Garamond", serif; font-size: 0.72rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold-light); display: block; margin-bottom: 0.5rem; }
+    .rsvp-title { font-family: "Great Vibes", cursive; font-size: clamp(3rem, 8vw, 5rem); color: #fff; margin-bottom: 0.5rem; }
+    .rsvp-rule { width: 55px; height: 1px; background: var(--gold); margin: 1rem auto; }
+    .rsvp-sub { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.1rem; color: rgba(255,255,255,0.75); }
+
+    /* MAIN CONTENT */
+    .rsvp-main { flex: 1; padding: 5rem 2rem; display: flex; align-items: center; justify-content: center; }
+    .rsvp-card { max-width: 560px; width: 100%; text-align: center; border: 1px solid var(--border); background: var(--cream); padding: 4rem 3rem; position: relative; }
+    .rsvp-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--crimson), var(--gold)); }
+    .rsvp-card-eye { font-family: "Cormorant Garamond", serif; font-size: 0.7rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 1rem; }
+    .rsvp-card-title { font-family: "Great Vibes", cursive; font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--crimson); margin-bottom: 1rem; }
+    .rsvp-card-rule { width: 40px; height: 1px; background: var(--gold); margin: 0 auto 1.5rem; }
+    .rsvp-card p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.08rem; color: var(--text-mid); line-height: 1.9; margin-bottom: 0.75rem; }
+    .rsvp-deadline { font-family: "Raleway", sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-light); margin-top: 1.5rem; display: block; }
+
+    /* FOOTER */
+    footer { background: var(--crimson-dark); padding: 2.5rem 2rem; text-align: center; }
+    .f-names { font-family: "Great Vibes", cursive; font-size: 2.2rem; color: var(--gold-light); margin-bottom: 0.3rem; }
+    .f-date { font-family: "Cormorant Garamond", serif; font-size: 0.72rem; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+
+    @media(max-width:640px) {
+      nav { padding: 1rem 1.5rem; }
+      .rsvp-card { padding: 2.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">S &amp; A</a>
+    <a href="index.html" class="nav-back">&#8592; Back to Main Site</a>
+  </nav>
+
+  <div class="rsvp-hero">
+    <div class="rsvp-hero-inner">
+      <span class="rsvp-eye">We'd Love to See You</span>
+      <div class="rsvp-title">RSVP</div>
+      <div class="rsvp-rule"></div>
+      <p class="rsvp-sub">Shivani &amp; Akshay · August 21–22, 2026</p>
+    </div>
+  </div>
+
+  <div class="rsvp-main">
+    <div class="rsvp-card">
+      <span class="rsvp-card-eye">Coming Soon</span>
+      <div class="rsvp-card-title">RSVP Form</div>
+      <div class="rsvp-card-rule"></div>
+      <p>Our RSVP form is on its way! Please check back soon — we can't wait to hear from you.</p>
+      <p>In the meantime, feel free to reach out at <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:var(--crimson)">shivani.akshaypathak@hotmail.com</a></p>
+      <span class="rsvp-deadline">Please RSVP by April 15, 2026</span>
+    </div>
+  </div>
+
+  <footer>
+    <div class="f-names">Shivani &amp; Akshay</div>
+    <div class="f-date">August 21 – 22, 2026 · Vaughan, Ontario</div>
+  </footer>
+
+</body>
+</html>
