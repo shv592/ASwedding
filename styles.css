@@ -189,6 +189,109 @@
     .faq-a { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.05rem; color: var(--text-mid); line-height: 1.85; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding-top 0.3s; }
     .faq-item.open .faq-a { max-height: 500px; padding-top: 1rem; }
 
+    /* ══ MESSAGES ══ */
+    #messages { background: var(--cream); }
+
+    /* Carousel */
+    .msg-carousel-wrap { position: relative; max-width: 720px; margin: 0 auto; padding: 0 2rem 3rem; min-height: 200px; }
+    .msg-carousel { position: relative; }
+    .msg-slide {
+      display: none;
+      text-align: center;
+      padding: 1rem 2rem 2rem;
+      animation: msgFade 0.6s ease both;
+    }
+    .msg-slide.active { display: block; }
+    @keyframes msgFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .msg-quote-mark { font-family: "Cormorant Garamond", serif; font-size: 5rem; color: var(--gold); line-height: 0.5; display: block; margin-bottom: 1rem; opacity: 0.4; }
+    .msg-text {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--charcoal);
+      line-height: 1.85;
+      max-width: 580px;
+      margin: 0 auto 1.25rem;
+    }
+    .msg-name {
+      font-family: "Raleway", sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    /* Dots */
+    .msg-dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .msg-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 1px solid var(--gold);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .msg-dot.active { background: var(--gold); }
+
+    /* Leave-a-message form */
+    .msg-form-wrap { max-width: 620px; margin: 0 auto; padding: 0 2rem 6rem; }
+    .msg-form-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      position: relative;
+    }
+    .msg-form-card::before {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--crimson), var(--gold));
+    }
+    .msg-form-intro {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .msg-input {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      padding: 0.8rem 1rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+      outline: none;
+      margin-bottom: 1rem;
+      transition: border-color 0.25s;
+    }
+    .msg-input::placeholder { color: var(--text-light); font-style: italic; }
+    .msg-input:focus { border-color: var(--crimson); }
+    .msg-textarea { resize: vertical; min-height: 110px; }
+    .msg-submit-btn {
+      background: transparent;
+      border: 1px solid var(--crimson);
+      color: var(--crimson);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.5rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    .msg-submit-btn:hover:not(:disabled) { background: var(--crimson); color: #fff; }
+    .msg-submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .msg-form-status {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      margin-top: 0.9rem;
+      min-height: 1.2em;
+      color: var(--text-mid);
+    }
+
     /* ══ FOOTER ══ */
     footer { background: var(--crimson-dark); padding: 3.5rem 2rem; text-align: center; }
     .f-names { font-family: "Great Vibes", cursive; font-size: 2.8rem; color: var(--gold-light); margin-bottom: 0.3rem; }

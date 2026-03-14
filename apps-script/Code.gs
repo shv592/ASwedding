@@ -48,9 +48,11 @@ function corsResponse(data) {
 function doGet(e) {
   try {
     const action = e.parameter.action || '';
-    if (action === 'lookup')   return handleLookup(e.parameter);
-    if (action === 'getGroup') return handleGetGroup(e.parameter);
-    if (action === 'submit')   return handleSubmit(e.parameter);
+    if (action === 'lookup')        return handleLookup(e.parameter);
+    if (action === 'getGroup')      return handleGetGroup(e.parameter);
+    if (action === 'submit')        return handleSubmit(e.parameter);
+    if (action === 'submitMessage') return handleSubmitMessage(e.parameter);
+    if (action === 'getMessages')   return handleGetMessages();
     return corsResponse({ error: 'Unknown action: ' + action });
   } catch (err) {
     return corsResponse({ error: err.message });
@@ -282,4 +284,51 @@ function handleSubmit(params) {
   }
 
   return corsResponse({ success: true });
+}
+
+// ── SUBMIT MESSAGE ────────────────────────────────────────────
+function handleSubmitMessage(params) {
+  const rawData = params.data || '';
+  if (!rawData) return corsResponse({ error: 'No data provided.' });
+
+  const payload = JSON.parse(decodeURIComponent(rawData));
+  const message = (payload.message || '').trim();
+  if (!message) return corsResponse({ error: 'Message is empty.' });
+
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = ss.getSheetByName('Messages');
+  if (!sheet) {
+    sheet = ss.insertSheet('Messages');
+    sheet.appendRow(['Timestamp', 'Name', 'Message']);
+    sheet.setFrozenRows(1);
+    sheet.getRange(1, 1, 1, 3).setFontWeight('bold');
+  }
+
+  sheet.appendRow([
+    new Date().toISOString(),
+    (payload.name || '').trim() || 'Anonymous',
+    message,
+  ]);
+
+  return corsResponse({ success: true });
+}
+
+// ── GET MESSAGES ──────────────────────────────────────────────
+function handleGetMessages() {
+  const ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName('Messages');
+  if (!sheet) return corsResponse({ messages: [] });
+
+  const data     = sheet.getDataRange().getValues();
+  const messages = [];
+  for (let r = 1; r < data.length; r++) {
+    const msg = String(data[r][2] || '').trim();
+    if (msg) {
+      messages.push({
+        name:    String(data[r][1] || 'Anonymous').trim(),
+        message: msg,
+      });
+    }
+  }
+  return corsResponse({ messages });
 }

@@ -665,6 +665,29 @@
       </div>
     </div>
 
+    <!-- ── STEP 2b: LEAVE A MESSAGE (shown if all declined) ── -->
+    <div class="rsvp-step" id="step-message">
+      <div class="rsvp-card">
+        <span class="step-eye">A Note for the Couple</span>
+        <div class="step-head">Leave a Message</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">We&rsquo;re so sorry you can&rsquo;t join us. We&rsquo;d love to hear from you — leave Shivani &amp; Akshay a message, some advice, or your well wishes.</p>
+        <div style="margin-bottom:1rem;">
+          <label class="member-name-label" for="rsvp-msg-name">Your Name</label>
+          <input type="text" id="rsvp-msg-name" class="email-input" placeholder="Pre-filled from your RSVP, or edit freely"/>
+        </div>
+        <div style="margin-bottom:1.5rem;">
+          <label class="member-name-label" for="rsvp-msg-text">Your Message</label>
+          <textarea id="rsvp-msg-text" class="email-input" rows="5" style="resize:vertical;" placeholder="Share your wishes, a favourite memory, or some advice for the couple&#8230;"></textarea>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <button class="search-btn" id="rsvp-msg-btn" onclick="submitRsvpMessage()">Send Message</button>
+          <button class="search-btn" onclick="showStep('step-confirm')" style="border-color:var(--text-light);color:var(--text-light);">Skip</button>
+        </div>
+        <div class="search-error" id="rsvp-msg-error" style="margin-top:1rem;"></div>
+      </div>
+    </div>
+
     <!-- ── STEP 3: CONFIRMATION ───────────────────────────── -->
     <div class="rsvp-step" id="step-confirm">
       <div class="rsvp-card confirm-card">
@@ -1130,7 +1153,16 @@ function collectAndSubmit() {
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.success) {
-        showStep('step-confirm');
+        if (checkAllDeclined()) {
+          // Pre-fill name from submitted RSVP
+          var prefill = _groupData && _groupData.members.length
+            ? (_groupData.members[0].firstName + ' ' + _groupData.members[0].lastName).trim()
+            : '';
+          document.getElementById('rsvp-msg-name').value = prefill;
+          showStep('step-message');
+        } else {
+          showStep('step-confirm');
+        }
       } else {
         submitBtn.textContent = 'Submit RSVP';
         submitBtn.disabled    = false;
@@ -1141,6 +1173,40 @@ function collectAndSubmit() {
       submitBtn.textContent = 'Submit RSVP';
       submitBtn.disabled    = false;
       alert('Network error. Please check your connection and try again.');
+    });
+}
+
+// ── checkAllDeclined ─────────────────────────────────────────
+function checkAllDeclined() {
+  var groups = document.querySelectorAll('.toggle-group[data-type="member"]');
+  if (!groups.length) return false;
+  for (var i = 0; i < groups.length; i++) {
+    var active = groups[i].querySelector('.toggle-btn.active, .toggle-btn.active-no');
+    if (!active || active.dataset.value === 'Yes') return false;
+  }
+  return true;
+}
+
+// ── submitRsvpMessage ────────────────────────────────────────
+function submitRsvpMessage() {
+  var name    = (document.getElementById('rsvp-msg-name').value || '').trim();
+  var text    = (document.getElementById('rsvp-msg-text').value || '').trim();
+  var errorEl = document.getElementById('rsvp-msg-error');
+  var btn     = document.getElementById('rsvp-msg-btn');
+
+  if (!text) { errorEl.textContent = 'Please write a message before sending.'; return; }
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+  errorEl.textContent = '';
+
+  var payload = { name: name || 'Anonymous', message: text };
+  fetch(APPS_SCRIPT_URL + '?action=submitMessage&data=' + encodeURIComponent(JSON.stringify(payload)), { credentials: 'omit' })
+    .then(function(r) { return r.json(); })
+    .then(function() { showStep('step-confirm'); })
+    .catch(function() {
+      // Still proceed to confirm even if message send fails
+      showStep('step-confirm');
     });
 }
 </script>
