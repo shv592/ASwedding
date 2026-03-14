@@ -1,0 +1,181 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --crimson: #8B1A2B; --crimson-dark: #5c0e1a;
+      --gold: #c9a84c; --gold-light: #e4c97e;
+      --cream: #fdf6ee; --warm-white: #fffaf5;
+      --charcoal: #2a2020; --text-mid: #5a4a42; --text-light: #9a8070;
+      --border: rgba(139,26,43,0.13);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: "Raleway", sans-serif; font-weight: 300; background: var(--warm-white); color: var(--charcoal); overflow-x: hidden; }
+
+    /* ══ GATE ══ */
+    #gate { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; background-size: cover; background-position: center; }
+    #gate::before { content: ""; position: absolute; inset: 0; background: rgba(50,6,12,0.76); }
+    .gate-orn { width: 130px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 1rem 0; position: relative; z-index: 1; }
+    .gate-title { font-family: "Great Vibes", cursive; font-size: clamp(3rem,9vw,5.8rem); color: var(--gold-light); position: relative; z-index: 1; line-height: 1.1; }
+    .gate-sub { font-family: "Cormorant Garamond", serif; font-size: 0.78rem; letter-spacing: 0.45em; text-transform: uppercase; color: rgba(255,255,255,0.42); position: relative; z-index: 1; margin-top: 0.3rem; }
+    .gate-form { display: flex; flex-direction: column; align-items: center; gap: 0.85rem; margin-top: 0.6rem; position: relative; z-index: 1; }
+    #pw-input { background: rgba(255,255,255,0.09); border: 1px solid rgba(201,168,76,0.4); color: #fff; padding: 0.8rem 1.6rem; font-family: "Cormorant Garamond", serif; font-size: 1rem; letter-spacing: 0.2em; text-align: center; width: 240px; outline: none; transition: border-color 0.3s; }
+    #pw-input::placeholder { color: rgba(255,255,255,0.28); }
+    #pw-input:focus { border-color: var(--gold); }
+    .gate-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold-light); padding: 0.65rem 2.8rem; font-family: "Cormorant Garamond", serif; font-size: 0.85rem; letter-spacing: 0.3em; text-transform: uppercase; cursor: pointer; transition: background 0.3s, color 0.3s; }
+    .gate-btn:hover { background: var(--gold); color: var(--crimson-dark); }
+    #pw-error { font-family: "Cormorant Garamond", serif; font-style: italic; color: #ffb5b5; font-size: 0.9rem; min-height: 1.1em; }
+
+    /* ══ SITE ══ */
+    #site { display: none; }
+    #site.visible { display: block; }
+
+    /* ══ NAV ══ */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(255,250,245,0.94); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: padding 0.3s; }
+    nav.scrolled { padding: 0.75rem 4rem; }
+    .nav-logo { font-family: "Great Vibes", cursive; font-size: 1.9rem; color: var(--crimson); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: "Cormorant Garamond", serif; font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; color: var(--text-mid); transition: color 0.25s; }
+    .nav-links a:hover { color: var(--crimson); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 22px; height: 1px; background: var(--crimson); display: block; }
+    .mob-nav { display: none; position: fixed; inset: 0; background: var(--cream); flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; z-index: 199; }
+    .mob-nav.open { display: flex; }
+    .mob-nav a { font-family: "Cormorant Garamond", serif; font-size: 1.5rem; letter-spacing: 0.12em; color: var(--crimson); text-decoration: none; }
+    .mob-close { position: absolute; top: 1.5rem; right: 2rem; font-size: 1.5rem; color: var(--text-mid); cursor: pointer; }
+
+    /* ══ HERO ══ */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 7rem 2rem 5rem;
+      background: var(--warm-white); position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 100%, rgba(139,26,43,0.05) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    /* subtle corner ornaments */
+    #hero::after {
+      content: ""; position: absolute; inset: 2.5rem;
+      border: 1px solid rgba(201,168,76,0.18);
+      pointer-events: none;
+    }
+    .hero-eyebrow { font-family: "Cormorant Garamond", serif; font-size: 0.75rem; letter-spacing: 0.55em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; z-index: 2; animation: fadeUp 0.8s ease both; }
+    .hero-name { font-family: "Great Vibes", cursive; font-size: clamp(5rem, 11vw, 10rem); color: var(--crimson); line-height: 1; z-index: 2; }
+    .hero-name.n1 { animation: fadeUp 0.9s ease 0.08s both; }
+    .hero-and { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(1rem,2.2vw,1.6rem); color: var(--gold); margin: 0.3rem 0; z-index: 2; animation: fadeUp 0.9s ease 0.14s both; }
+    .hero-name.n2 { animation: fadeUp 0.9s ease 0.2s both; }
+    .hero-rule { width: 100px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 2.2rem auto; z-index: 2; animation: fadeUp 0.9s ease 0.26s both; }
+    .hero-tagline { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(1rem,1.8vw,1.35rem); color: var(--text-mid); line-height: 2; max-width: 500px; z-index: 2; animation: fadeUp 0.9s ease 0.3s both; }
+    .hero-date { font-family: "Raleway", sans-serif; font-size: 0.7rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--text-light); margin-top: 1.2rem; z-index: 2; animation: fadeUp 0.9s ease 0.34s both; }
+    .hero-cta { display: inline-block; margin-top: 2.5rem; font-family: "Cormorant Garamond", serif; font-size: 0.82rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--crimson); text-decoration: none; border: 1px solid var(--crimson); padding: 0.95rem 3rem; transition: background 0.3s, color 0.3s; z-index: 2; animation: fadeUp 0.9s ease 0.4s both; }
+    .hero-cta:hover { background: var(--crimson); color: #fff; }
+
+    /* ══ WELCOME ══ */
+    #welcome { position: relative; overflow: hidden; min-height: 360px; display: flex; align-items: center; justify-content: center; }
+    .welcome-bg { position: absolute; inset: 0; background-size: cover; background-position: center 40%; }
+    .welcome-bg::after { content: ""; position: absolute; inset: 0; background: rgba(50,6,12,0.78); }
+    .welcome-inner { position: relative; z-index: 1; text-align: center; padding: 5rem 2rem; max-width: 680px; }
+    .welcome-label { font-family: "Cormorant Garamond", serif; font-size: 0.72rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1.2rem; display: block; }
+    .welcome-rule { width: 60px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold-light),transparent); margin: 0 auto 1.8rem; }
+    .welcome-text { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(1.05rem,2.5vw,1.3rem); color: rgba(255,255,255,0.85); line-height: 2; }
+
+    /* ══ SHARED SECTION ══ */
+    .sec-wrap { max-width: 1100px; margin: 0 auto; }
+    .sec-eye { font-family: "Cormorant Garamond", serif; font-size: 0.72rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; display: block; }
+    .sec-head { font-family: "Great Vibes", cursive; font-size: clamp(2.5rem,6vw,4.5rem); color: var(--crimson); margin-bottom: 0.8rem; }
+    .sec-rule { width: 55px; height: 1px; background: var(--gold); margin-bottom: 2.5rem; }
+    .day-sep { display: flex; align-items: center; gap: 1.5rem; margin: 3rem 0 0; }
+    .day-sep-line { flex: 1; height: 1px; background: var(--border); }
+    .day-sep-txt { font-family: "Cormorant Garamond", serif; font-size: 0.7rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+
+    /* ══ SCHEDULE ══ */
+    #schedule { padding: 6rem 2rem; background: var(--cream); }
+
+    /* Event card: full-width image on top, text below */
+    .event-card { border: 1px solid var(--border); overflow: hidden; background: var(--warm-white); margin-top: 0; opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .event-card.in-view { opacity: 1; transform: none; }
+    .event-img { width: 100%; height: 300px; object-fit: cover; object-position: center; display: block; transition: transform 0.5s ease; }
+    .event-card:hover .event-img { transform: scale(1.03); }
+    .event-body { padding: 1.6rem 2rem 1.8rem; }
+    .event-badge { display: inline-block; font-family: "Raleway", sans-serif; font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; background: var(--crimson); color: #fff; padding: 0.2rem 0.75rem; margin-bottom: 0.5rem; }
+    .event-name { font-family: "Cormorant Garamond", serif; font-size: 1.65rem; font-weight: 500; color: var(--crimson); margin-bottom: 0.2rem; }
+    .event-time { font-family: "Raleway", sans-serif; font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+    .event-desc { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.05rem; color: var(--text-mid); line-height: 1.8; margin-bottom: 0.8rem; }
+    .event-chips { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
+    .event-chip { font-family: "Raleway", sans-serif; font-size: 0.68rem; letter-spacing: 0.12em; color: var(--text-light); display: flex; align-items: center; gap: 0.4rem; }
+    .event-chip::before { content: "◆"; color: var(--gold); font-size: 0.42rem; }
+
+    /* Uniform 3-column grid — all cards same size */
+    .events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
+    .event-single { margin-top: 1.5rem; }
+    .event-single .event-img { height: 300px; }
+
+    /* ══ TRAVEL ══ */
+    #travel { padding: 6rem 2rem; background: var(--warm-white); }
+    .travel-banner { width: 100%; height: 420px; background-size: cover; background-position: center 20%; display: block; margin-bottom: 3rem; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+    .hotel-box { border: 1px solid var(--border); background: var(--cream); padding: 2.5rem 3rem; margin-bottom: 2.5rem; position: relative; }
+    .hotel-box::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--crimson), var(--gold)); }
+    .hotel-box h3 { font-family: "Cormorant Garamond", serif; font-size: 1.5rem; font-weight: 500; color: var(--crimson); margin-bottom: 0.65rem; }
+    .hotel-box p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.05rem; color: var(--text-mid); line-height: 1.8; margin-bottom: 0.75rem; }
+    .code-badge { display: inline-block; background: var(--crimson); color: #fff; font-family: "Raleway", sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; padding: 0.3rem 1rem; }
+    .hotel-link { display: inline-block; margin-top: 1rem; font-family: "Cormorant Garamond", serif; font-size: 1rem; color: var(--crimson); text-decoration: none; border-bottom: 1px solid rgba(139,26,43,0.2); }
+    .tips-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .tip-card { background: var(--cream); border: 1px solid var(--border); padding: 2rem; opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .tip-card.in-view { opacity: 1; transform: none; }
+    .tip-n { font-family: "Cormorant Garamond", serif; font-size: 2.5rem; font-weight: 300; color: rgba(139,26,43,0.1); line-height: 1; margin-bottom: 0.4rem; }
+    .tip-card h4 { font-family: "Cormorant Garamond", serif; font-size: 1.15rem; font-weight: 500; color: var(--crimson); margin-bottom: 0.55rem; }
+    .tip-card p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1rem; color: var(--text-mid); line-height: 1.8; }
+
+    /* ══ RSVP ══ */
+    #rsvp { padding: 6rem 2rem; text-align: center; position: relative; overflow: hidden; background-size: cover; background-position: center top; }
+    #rsvp::before { content: ""; position: absolute; inset: 0; background: rgba(55,8,14,0.83); }
+    #rsvp .sec-eye { color: var(--gold-light); position: relative; z-index: 1; }
+    #rsvp .sec-head { color: #fff; position: relative; z-index: 1; }
+    #rsvp .sec-rule { background: var(--gold-light); margin: 0 auto 2.5rem; position: relative; z-index: 1; }
+    #rsvp p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.18rem; color: rgba(255,255,255,0.78); line-height: 1.9; max-width: 480px; margin: 0 auto 2.5rem; position: relative; z-index: 1; }
+    .rsvp-btn { display: inline-block; background: transparent; border: 1px solid var(--gold-light); color: var(--gold-light); font-family: "Cormorant Garamond", serif; font-size: 0.85rem; letter-spacing: 0.35em; text-transform: uppercase; padding: 1rem 3.5rem; text-decoration: none; transition: background 0.3s, color 0.3s, border-color 0.3s; position: relative; z-index: 1; }
+    .rsvp-btn:hover { background: var(--gold); color: var(--crimson-dark); border-color: var(--gold); }
+    .rsvp-note { margin-top: 1.5rem; font-family: "Raleway", sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.35); position: relative; z-index: 1; }
+
+    /* ══ FAQ ══ */
+    #faq { padding: 6rem 2rem; position: relative; background-size: cover; background-position: center 25%; }
+    #faq::before { content: ""; position: absolute; inset: 0; background: rgba(253,246,238,0.93); }
+    .faq-wrap { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 1.5rem 0; cursor: pointer; }
+    .faq-q { font-family: "Cormorant Garamond", serif; font-size: 1.1rem; font-weight: 500; color: var(--crimson); display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+    .faq-plus { font-size: 1.3rem; color: var(--gold); transition: transform 0.3s; flex-shrink: 0; }
+    .faq-item.open .faq-plus { transform: rotate(45deg); }
+    .faq-a { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.05rem; color: var(--text-mid); line-height: 1.85; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding-top 0.3s; }
+    .faq-item.open .faq-a { max-height: 500px; padding-top: 1rem; }
+
+    /* ══ FOOTER ══ */
+    footer { background: var(--crimson-dark); padding: 3.5rem 2rem; text-align: center; }
+    .f-names { font-family: "Great Vibes", cursive; font-size: 2.8rem; color: var(--gold-light); margin-bottom: 0.3rem; }
+    .f-date { font-family: "Cormorant Garamond", serif; font-size: 0.72rem; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 1.2rem; }
+    .f-rule { width: 70px; height: 1px; background: linear-gradient(90deg,transparent,rgba(201,168,76,0.5),transparent); margin: 0 auto 1.2rem; }
+    .f-contact { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 0.92rem; color: rgba(255,255,255,0.3); }
+    .f-contact a { color: rgba(255,255,255,0.45); text-decoration: none; }
+    .f-contact a:hover { color: var(--gold-light); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+    @media(max-width:900px) {
+      #hero { padding: 7rem 1.5rem 4rem; }
+      #hero::after { inset: 1rem; }
+      .events-grid { grid-template-columns: 1fr; }
+      .tips-grid { grid-template-columns: 1fr; }
+    }
+    @media(min-width:640px) and (max-width:900px) {
+      .events-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media(max-width:640px) {
+      nav { padding: 1rem 1.5rem; } nav.scrolled { padding: 0.7rem 1.5rem; }
+      .nav-links { display: none; } .hamburger { display: flex; }
+      #schedule, #travel, #faq, #rsvp { padding: 4rem 1.25rem; }
+      .event-img { height: 220px; }
+      .event-single .event-img { height: 260px; }
+      .hotel-box { padding: 1.5rem; }
+      .travel-banner { height: 260px; }
+    }
