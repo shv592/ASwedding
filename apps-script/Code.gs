@@ -3,7 +3,7 @@
 //  Deploy as: Web App → Execute as Me → Anyone (or Anyone with link)
 // ============================================================
 
-const SPREADSHEET_ID      = 'YOUR_SPREADSHEET_ID_HERE';
+const SPREADSHEET_ID      = '1A31Vkz79SiVJ83m7D3BbtB1ZUIcmeFj7cqnmcUxKDS4';
 const MASTER_SHEET_NAME   = 'Sheet1';
 const RESPONSE_SHEET_NAME = 'RSVP Responses';
 
