@@ -138,16 +138,16 @@
     .tm-panel { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .tm-panel.in-view { opacity: 1; transform: none; }
 
-    /* Hotel card — hotel.png background with overlay */
-    .tm-hotel { grid-area: hotel; background-image: url("images/hotel.png"); background-size: cover; background-position: center; position: relative; padding: 2.5rem 2.75rem; }
-    .tm-hotel::before { content: ""; position: absolute; inset: 0; background: rgba(20,3,6,0.86); }
-    .tm-hotel > * { position: relative; z-index: 1; }
+    /* Hotel card — deep navy colour scheme, no image */
+    .tm-hotel { grid-area: hotel; background: #1a2340; padding: 2.5rem 2.75rem; }
     .tm-label { font-family: "Cormorant Garamond", serif; font-size: 0.65rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold-light); display: block; margin-bottom: 0.4rem; }
     .tm-title { font-family: "Cormorant Garamond", serif; font-size: 1.75rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem; }
     .tm-divider { width: 35px; height: 1px; background: var(--gold); margin-bottom: 1.2rem; }
-    .tm-hotel p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.02rem; color: rgba(255,255,255,0.78); line-height: 1.8; margin-bottom: 0.9rem; }
+    .tm-hotel p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.02rem; color: rgba(220,230,255,0.82); line-height: 1.8; margin-bottom: 0.9rem; }
     .tm-code { display: inline-block; border: 1px solid var(--gold); color: var(--gold-light); font-family: "Raleway", sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; padding: 0.3rem 1rem; margin-bottom: 0.9rem; }
-    .tm-warning { font-size: 0.95rem !important; color: rgba(255,255,255,0.55) !important; }
+    .tm-warning { font-size: 0.95rem !important; color: rgba(220,230,255,0.6) !important; }
+    .tm-hotel-link { color: var(--gold-light); text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s; }
+    .tm-hotel-link:hover { color: #fff; }
     .tm-book-link { display: inline-block; font-family: "Cormorant Garamond", serif; font-size: 1rem; color: var(--gold-light); text-decoration: none; border-bottom: 1px solid rgba(201,168,76,0.4); transition: border-color 0.2s, color 0.2s; }
     .tm-book-link:hover { color: #fff; border-color: rgba(201,168,76,0.8); }
 
