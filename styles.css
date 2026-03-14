@@ -114,14 +114,16 @@
 
     /* ══ TRAVEL ══ */
     #travel { padding: 6rem 2rem; background: var(--warm-white); }
-    .travel-banner { width: 420px; height: 630px; background-image: url("images/travel.png"); background-size: cover; background-position: center center; display: block; margin: 0 auto 3rem; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+    .travel-layout { display: grid; grid-template-columns: 380px 1fr; gap: 3rem; align-items: start; }
+    .travel-banner { width: 100%; height: 600px; background-image: url("images/travel.png"); background-size: cover; background-position: center center; display: block; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+    .travel-content { display: flex; flex-direction: column; gap: 2rem; }
     .hotel-box { border: 1px solid var(--border); background: var(--cream); padding: 2.5rem 3rem; margin-bottom: 2.5rem; position: relative; }
     .hotel-box::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--crimson), var(--gold)); }
     .hotel-box h3 { font-family: "Cormorant Garamond", serif; font-size: 1.5rem; font-weight: 500; color: var(--crimson); margin-bottom: 0.65rem; }
     .hotel-box p { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.05rem; color: var(--text-mid); line-height: 1.8; margin-bottom: 0.75rem; }
     .code-badge { display: inline-block; background: var(--crimson); color: #fff; font-family: "Raleway", sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; padding: 0.3rem 1rem; }
     .hotel-link { display: inline-block; margin-top: 1rem; font-family: "Cormorant Garamond", serif; font-size: 1rem; color: var(--crimson); text-decoration: none; border-bottom: 1px solid rgba(139,26,43,0.2); }
-    .tips-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .tips-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
     .tip-card { background: var(--cream); border: 1px solid var(--border); padding: 2rem; opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .tip-card.in-view { opacity: 1; transform: none; }
     .tip-n { font-family: "Cormorant Garamond", serif; font-size: 2.5rem; font-weight: 300; color: rgba(139,26,43,0.1); line-height: 1; margin-bottom: 0.4rem; }
@@ -177,5 +179,6 @@
       .event-img { height: 220px; }
       .event-single .event-img { height: 260px; }
       .hotel-box { padding: 1.5rem; }
-      .travel-banner { width: 100%; height: 480px; }
+      .travel-layout { grid-template-columns: 1fr; }
+      .travel-banner { height: 480px; }
     }
