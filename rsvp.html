@@ -652,6 +652,60 @@ const EVENT_META = {
 
 // Store fetched group data for submission
 let _groupData = null;
+// Cache group data fetched during match preview so selectMatch never re-fetches
+let _groupCache = {};
+
+// ── showAlreadyRsvped ─────────────────────────────────────────
+function showAlreadyRsvped() {
+  showStep('step-search');
+  var prior = document.getElementById('already-notice-el');
+  if (prior) prior.remove();
+  var notice = document.createElement('div');
+  notice.className = 'already-notice';
+  notice.id = 'already-notice-el';
+  notice.innerHTML = '<p>It looks like your group has already submitted an RSVP. If you need to make changes, please reach out at <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:var(--crimson)">shivani.akshaypathak@hotmail.com</a>.</p>';
+  document.getElementById('open-state').appendChild(notice);
+}
+
+// ── buildEventRow ─────────────────────────────────────────────
+function buildEventRow(tag, idx, type) {
+  var meta = EVENT_META[tag];
+  if (!meta) return null;
+  var row = document.createElement('div');
+  row.className = 'event-row';
+  var labelWrap = document.createElement('div');
+  labelWrap.className = 'event-label-wrap';
+  var labelName = document.createElement('div');
+  labelName.className = 'event-label-name';
+  labelName.textContent = meta.name;
+  var labelDate = document.createElement('div');
+  labelDate.className = 'event-label-date';
+  labelDate.textContent = meta.date;
+  labelWrap.appendChild(labelName);
+  labelWrap.appendChild(labelDate);
+  var toggleGroup = document.createElement('div');
+  toggleGroup.className = 'toggle-group';
+  toggleGroup.dataset.tag = tag;
+  toggleGroup.dataset.type = type;
+  if (type === 'member') { toggleGroup.dataset.memberIdx = idx; }
+  else                   { toggleGroup.dataset.guestIdx  = idx; }
+  toggleGroup.appendChild(createToggleBtn('Yes', true));
+  toggleGroup.appendChild(createToggleBtn('No',  false));
+  row.appendChild(labelWrap);
+  row.appendChild(toggleGroup);
+  return row;
+}
+
+// ── collectRsvp ───────────────────────────────────────────────
+function collectRsvp(type, idx) {
+  var attr = type === 'member' ? 'data-member-idx' : 'data-guest-idx';
+  var rsvp = {};
+  document.querySelectorAll('.toggle-group[data-type="' + type + '"][' + attr + '="' + idx + '"]').forEach(function(group) {
+    var active = group.querySelector('.toggle-btn.active, .toggle-btn.active-no');
+    rsvp[group.dataset.tag] = active ? active.dataset.value : 'Yes';
+  });
+  return rsvp;
+}
 
 // ── On page load: check deadline ────────────────────────────
 (function checkDeadline() {
@@ -718,16 +772,8 @@ function searchGuest(e) {
       }
 
       if (data.alreadyRsvped) {
-        // Show a polite already-submitted message in the search card
         errorEl.innerHTML = '';
-        var notice = document.createElement('div');
-        notice.className = 'already-notice';
-        notice.innerHTML = '<p>It looks like your group has already submitted an RSVP. If you need to make changes, please reach out at <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:var(--crimson)">shivani.akshaypathak@hotmail.com</a>.</p>';
-        // Remove any prior notice before appending
-        var prior = document.getElementById('already-notice-el');
-        if (prior) prior.remove();
-        notice.id = 'already-notice-el';
-        document.getElementById('open-state').appendChild(notice);
+        showAlreadyRsvped();
         return;
       }
 
@@ -775,10 +821,12 @@ function buildMatchSelection(matches) {
     btn.onclick = function() { selectMatch(match.groupId); };
     container.appendChild(btn);
 
-    // Fetch this group's members so the user can tell which entry is theirs
+    // Fetch this group's members so the user can tell which entry is theirs.
+    // Cache the result so selectMatch never needs to re-fetch the same group.
     fetch(APPS_SCRIPT_URL + '?action=getGroup&groupId=' + encodeURIComponent(match.groupId), { credentials: 'omit' })
       .then(function(r) { return r.json(); })
       .then(function(data) {
+        _groupCache[match.groupId] = data;
         if (data.members && data.members.length > 0) {
           var names = data.members.map(function(m) { return m.firstName + ' ' + m.lastName; });
           familyDiv.textContent = 'Party: ' + names.join(', ');
@@ -792,28 +840,26 @@ function buildMatchSelection(matches) {
 
 // ── selectMatch ──────────────────────────────────────────────
 function selectMatch(groupId) {
-  var url = APPS_SCRIPT_URL + '?action=getGroup&groupId=' + encodeURIComponent(groupId);
-  fetch(url, { credentials: 'omit' })
+  function handleGroup(data) {
+    if (data.alreadyRsvped) { showAlreadyRsvped(); return; }
+    _groupData = data;
+    buildForm(data.members[0].firstName, data);
+    showStep('step-form');
+  }
+
+  // Use cached data when available — avoids a redundant API round-trip
+  if (_groupCache[groupId]) {
+    handleGroup(_groupCache[groupId]);
+    return;
+  }
+
+  fetch(APPS_SCRIPT_URL + '?action=getGroup&groupId=' + encodeURIComponent(groupId), { credentials: 'omit' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      if (data.alreadyRsvped) {
-        showStep('step-search');
-        var notice = document.createElement('div');
-        notice.className = 'already-notice';
-        notice.innerHTML = '<p>It looks like your group has already submitted an RSVP. If you need to make changes, please reach out at <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:var(--crimson)">shivani.akshaypathak@hotmail.com</a>.</p>';
-        var prior = document.getElementById('already-notice-el');
-        if (prior) prior.remove();
-        notice.id = 'already-notice-el';
-        document.getElementById('open-state').appendChild(notice);
-        return;
-      }
-      _groupData = data;
-      buildForm(data.members[0].firstName, data);
-      showStep('step-form');
+      _groupCache[groupId] = data;
+      handleGroup(data);
     })
-    .catch(function() {
-      alert('Network error. Please try again.');
-    });
+    .catch(function() { alert('Network error. Please try again.'); });
 }
 
 // ── buildForm ────────────────────────────────────────────────
@@ -843,42 +889,8 @@ function buildForm(firstName, data) {
 
     // One event row per invited event
     member.events.forEach(function(tag) {
-      var meta = EVENT_META[tag];
-      if (!meta) return;
-
-      var row = document.createElement('div');
-      row.className = 'event-row';
-
-      var labelWrap = document.createElement('div');
-      labelWrap.className = 'event-label-wrap';
-
-      var labelName = document.createElement('div');
-      labelName.className = 'event-label-name';
-      labelName.textContent = meta.name;
-
-      var labelDate = document.createElement('div');
-      labelDate.className = 'event-label-date';
-      labelDate.textContent = meta.date;
-
-      labelWrap.appendChild(labelName);
-      labelWrap.appendChild(labelDate);
-
-      var toggleGroup = document.createElement('div');
-      toggleGroup.className = 'toggle-group';
-      // data attributes for collection
-      toggleGroup.dataset.memberIdx = idx;
-      toggleGroup.dataset.tag = tag;
-      toggleGroup.dataset.type = 'member';
-
-      var yesBtn = createToggleBtn('Yes', true);
-      var noBtn  = createToggleBtn('No',  false);
-
-      toggleGroup.appendChild(yesBtn);
-      toggleGroup.appendChild(noBtn);
-
-      row.appendChild(labelWrap);
-      row.appendChild(toggleGroup);
-      card.appendChild(row);
+      var row = buildEventRow(tag, idx, 'member');
+      if (row) card.appendChild(row);
     });
 
     membersContainer.appendChild(card);
@@ -931,41 +943,8 @@ function buildForm(firstName, data) {
 
       // Event rows for additional guests (same events as group)
       groupEvents.forEach(function(tag) {
-        var meta = EVENT_META[tag];
-        if (!meta) return;
-
-        var row = document.createElement('div');
-        row.className = 'event-row';
-
-        var labelWrap = document.createElement('div');
-        labelWrap.className = 'event-label-wrap';
-
-        var labelName = document.createElement('div');
-        labelName.className = 'event-label-name';
-        labelName.textContent = meta.name;
-
-        var labelDate = document.createElement('div');
-        labelDate.className = 'event-label-date';
-        labelDate.textContent = meta.date;
-
-        labelWrap.appendChild(labelName);
-        labelWrap.appendChild(labelDate);
-
-        var toggleGroup = document.createElement('div');
-        toggleGroup.className = 'toggle-group';
-        toggleGroup.dataset.guestIdx = g;
-        toggleGroup.dataset.tag = tag;
-        toggleGroup.dataset.type = 'guest';
-
-        var yesBtn = createToggleBtn('Yes', true);
-        var noBtn  = createToggleBtn('No',  false);
-
-        toggleGroup.appendChild(yesBtn);
-        toggleGroup.appendChild(noBtn);
-
-        row.appendChild(labelWrap);
-        row.appendChild(toggleGroup);
-        gCard.appendChild(row);
+        var row = buildEventRow(tag, g, 'guest');
+        if (row) gCard.appendChild(row);
       });
 
       section.appendChild(gCard);
@@ -1008,13 +987,7 @@ function collectAndSubmit() {
 
   // Collect member RSVPs
   var membersOut = _groupData.members.map(function(member, idx) {
-    var rsvp = {};
-    var toggleGroups = document.querySelectorAll('.toggle-group[data-type="member"][data-member-idx="' + idx + '"]');
-    toggleGroups.forEach(function(group) {
-      var tag    = group.dataset.tag;
-      var active = group.querySelector('.toggle-btn.active, .toggle-btn.active-no');
-      rsvp[tag]  = active ? active.dataset.value : 'Yes';
-    });
+    var rsvp = collectRsvp('member', idx);
     var nameInput = document.querySelector('.member-name-input[data-member-idx="' + idx + '"]');
     var displayName = nameInput ? nameInput.value.trim() : (member.firstName + ' ' + member.lastName);
     return {
@@ -1036,15 +1009,7 @@ function collectAndSubmit() {
     var nameInput = document.querySelector('.addl-name-input[data-guest-idx="' + g + '"]');
     var guestName = nameInput ? nameInput.value.trim() : '';
 
-    var rsvp = {};
-    var toggleGroups = document.querySelectorAll('.toggle-group[data-type="guest"][data-guest-idx="' + g + '"]');
-    toggleGroups.forEach(function(group) {
-      var tag    = group.dataset.tag;
-      var active = group.querySelector('.toggle-btn.active, .toggle-btn.active-no');
-      rsvp[tag]  = active ? active.dataset.value : 'Yes';
-    });
-
-    additionalOut.push({ name: guestName, rsvp: rsvp });
+    additionalOut.push({ name: guestName, rsvp: collectRsvp('guest', g) });
   }
 
   var emailInput = document.getElementById('inp-email');
