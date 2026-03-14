@@ -236,6 +236,17 @@
     .email-input::placeholder { color: var(--text-light); font-style: italic; }
     .email-input:focus { border-color: var(--crimson); }
 
+    /* ── VERIFY IDENTITY NAME LIST ──────────────────────── */
+    .verify-name-item {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--crimson);
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .verify-name-item:last-child { border-bottom: none; }
+
     /* ── MATCH SELECTION BUTTONS ────────────────────────── */
     .match-btn {
       display: block;
@@ -572,7 +583,26 @@
       </div>
     </div>
 
-    <!-- ── STEP 1b: MULTIPLE MATCHES ──────────────────────── -->
+    <!-- ── STEP 1b: VERIFY IDENTITY ──────────────────────── -->
+    <div class="rsvp-step" id="step-verify">
+      <div class="rsvp-card">
+        <span class="step-eye">Confirm Your Name</span>
+        <div class="step-head">Is this you?</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">We found the following guest(s) under that name:</p>
+        <div id="verify-names"></div>
+        <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
+          <button class="search-btn" onclick="confirmIdentity(true)">Yes, that&rsquo;s me</button>
+          <button class="search-btn" onclick="confirmIdentity(false)" style="border-color:var(--text-light);color:var(--text-light);">No, that&rsquo;s not me</button>
+        </div>
+        <div class="search-error" id="verify-error"></div>
+        <div style="text-align:center;margin-top:1.5rem;">
+          <span class="back-link" onclick="showStep('step-search')">&#8592; Search again</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 1c: MULTIPLE MATCHES ──────────────────────── -->
     <div class="rsvp-step" id="step-select">
       <div class="rsvp-card">
         <span class="step-eye">Select Your Name</span>
@@ -654,6 +684,8 @@ const EVENT_META = {
 let _groupData = null;
 // Cache group data fetched during match preview so selectMatch never re-fetches
 let _groupCache = {};
+// Name to show in the welcome heading (what the user searched)
+let _pendingWelcomeName = '';
 
 // ── showAlreadyRsvped ─────────────────────────────────────────
 function showAlreadyRsvped() {
@@ -780,10 +812,10 @@ function searchGuest(e) {
       var prior = document.getElementById('already-notice-el');
       if (prior) prior.remove();
 
-      // Store data and build form
+      // Store data and show "Is this you?" confirmation before the form
       _groupData = data;
-      buildForm(data.members[0].firstName, data);
-      showStep('step-form');
+      _pendingWelcomeName = (firstName + ' ' + lastName).trim();
+      showVerifyStep(data);
     })
     .catch(function() {
       btn.textContent = 'Find My Invitation';
@@ -795,6 +827,31 @@ function searchGuest(e) {
 // Allow pressing Enter in the name inputs to trigger search
 document.getElementById('inp-first').addEventListener('keydown', function(e) { if (e.key === 'Enter') searchGuest(e); });
 document.getElementById('inp-last').addEventListener('keydown',  function(e) { if (e.key === 'Enter') searchGuest(e); });
+
+// ── showVerifyStep ───────────────────────────────────────────
+function showVerifyStep(data) {
+  var container = document.getElementById('verify-names');
+  container.innerHTML = '';
+  data.members.forEach(function(m) {
+    var el = document.createElement('div');
+    el.className = 'verify-name-item';
+    el.textContent = m.firstName + ' ' + m.lastName;
+    container.appendChild(el);
+  });
+  document.getElementById('verify-error').textContent = '';
+  showStep('step-verify');
+}
+
+// ── confirmIdentity ──────────────────────────────────────────
+function confirmIdentity(yes) {
+  if (yes) {
+    buildForm(_pendingWelcomeName, _groupData);
+    showStep('step-form');
+  } else {
+    document.getElementById('verify-error').textContent =
+      'We\u2019re sorry — please try searching again with a different name or spelling.';
+  }
+}
 
 // ── buildMatchSelection ──────────────────────────────────────
 function buildMatchSelection(matches) {
@@ -817,7 +874,7 @@ function buildMatchSelection(matches) {
 
     btn.appendChild(nameDiv);
     btn.appendChild(familyDiv);
-    btn.onclick = function() { selectMatch(match.groupId); };
+    btn.onclick = function() { selectMatch(match.groupId, match.name); };
     container.appendChild(btn);
 
     // Fetch this group's members so the user can tell which entry is theirs.
@@ -838,11 +895,12 @@ function buildMatchSelection(matches) {
 }
 
 // ── selectMatch ──────────────────────────────────────────────
-function selectMatch(groupId) {
+function selectMatch(groupId, clickedName) {
   function handleGroup(data) {
     if (data.alreadyRsvped) { showAlreadyRsvped(); return; }
     _groupData = data;
-    buildForm(data.members[0].firstName, data);
+    _pendingWelcomeName = clickedName || (data.members[0].firstName + ' ' + data.members[0].lastName).trim();
+    buildForm(_pendingWelcomeName, data);
     showStep('step-form');
   }
 
