@@ -283,7 +283,141 @@ function handleSubmit(params) {
     master.getRange(r + 1, rsvpCol + 1).setValue('Yes');
   }
 
+  // Send confirmation email if an address was provided
+  if (email) {
+    sendConfirmationEmail(email, submittedBy, members, additional);
+  }
+
   return corsResponse({ success: true });
+}
+
+// ── EMAIL CONFIRMATION ────────────────────────────────────────
+function sendConfirmationEmail(email, submittedBy, members, additional) {
+  const EVENT_LABELS = {
+    haldi:           { name: 'Haldi & Devgon',           date: 'August 21' },
+    sangeet:         { name: 'Mehndi & Sangeet Night',   date: 'August 21, Evening' },
+    lagan:           { name: 'Baraat & Lagan Ceremony',  date: 'August 22' },
+    canadaReception: { name: 'Cocktail & Reception',     date: 'August 22, Evening' },
+    indiaReception:  { name: 'India Reception',          date: 'October 2026, Delhi' },
+  };
+
+  function personBlock(name, rsvp, isGuest) {
+    const keys = Object.keys(EVENT_LABELS).filter(k => rsvp[k]);
+    if (!keys.length) return '';
+    const label = isGuest
+      ? name + ' &nbsp;<span style="font-size:0.78em;color:#9a8070;font-style:italic;">(Additional Guest)</span>'
+      : name;
+    const rows = keys.map(k => {
+      const attending = rsvp[k] === 'Yes';
+      return '<tr>'
+        + '<td style="padding:10px 16px 10px 0;border-bottom:1px solid #f0e8df;font-family:Georgia,serif;font-size:15px;color:#5a4a42;">'
+        +   EVENT_LABELS[k].name
+        +   '<div style="font-size:11px;letter-spacing:0.1em;color:#c9a84c;margin-top:2px;text-transform:uppercase;">' + EVENT_LABELS[k].date + '</div>'
+        + '</td>'
+        + '<td style="padding:10px 0;border-bottom:1px solid #f0e8df;text-align:right;white-space:nowrap;">'
+        +   '<span style="display:inline-block;padding:3px 12px;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-family:Arial,sans-serif;border-radius:2px;'
+        +   (attending
+            ? 'background:#8B1A2B;color:#fff;'
+            : 'background:#f0e8df;color:#9a8070;')
+        +   '">' + (attending ? '✓ &nbsp;Attending' : '✗ &nbsp;Unable to attend') + '</span>'
+        + '</td>'
+        + '</tr>';
+    }).join('');
+    return '<div style="margin-bottom:1.5rem;">'
+      + '<div style="font-family:Georgia,serif;font-size:18px;color:#8B1A2B;font-weight:600;margin-bottom:0.6rem;padding-bottom:0.5rem;border-bottom:2px solid #c9a84c;">' + label + '</div>'
+      + '<table style="width:100%;border-collapse:collapse;">' + rows + '</table>'
+      + '</div>';
+  }
+
+  let allBlocks = '';
+  for (let i = 0; i < members.length; i++) {
+    const m    = members[i];
+    const name = m.displayName || m.fullName || ((m.firstName + ' ' + m.lastName).trim());
+    allBlocks += personBlock(name, m.rsvp || {}, false);
+  }
+  for (let i = 0; i < additional.length; i++) {
+    const guestName = (additional[i].name || '').trim();
+    if (!guestName) continue;
+    allBlocks += personBlock(guestName, additional[i].rsvp || {}, true);
+  }
+
+  const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Great+Vibes&display=swap');
+</style>
+</head>
+<body style="margin:0;padding:0;background:#f5ede4;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5ede4;padding:32px 0;">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fffaf5;border:1px solid #e8d9cc;">
+
+  <!-- HEADER -->
+  <tr>
+    <td style="background:#32060c;padding:48px 40px 40px;text-align:center;">
+      <div style="width:100px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:0 auto 20px;"></div>
+      <div style="font-family:'Great Vibes',Georgia,serif;font-size:52px;color:#e4c97e;line-height:1;margin-bottom:8px;">Shivani &amp; Akshay</div>
+      <div style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;">August 21 &ndash; 22, 2026 &middot; Vaughan, Ontario</div>
+      <div style="width:100px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:0 auto;"></div>
+    </td>
+  </tr>
+
+  <!-- EYEBROW -->
+  <tr>
+    <td style="background:#8B1A2B;padding:10px 40px;text-align:center;">
+      <span style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#e4c97e;">RSVP Confirmation</span>
+    </td>
+  </tr>
+
+  <!-- BODY -->
+  <tr>
+    <td style="padding:40px 40px 32px;">
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:18px;color:#5a4a42;line-height:1.8;margin:0 0 12px;">Dear ${submittedBy},</p>
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:16px;color:#5a4a42;line-height:1.9;margin:0 0 28px;">
+        Thank you so much for your RSVP — we are overjoyed to be sharing these moments with you! Below is a summary of the responses we received for your party.
+      </p>
+
+      <!-- DIVIDER -->
+      <div style="width:40px;height:1px;background:#c9a84c;margin-bottom:28px;"></div>
+
+      <!-- RSVP SUMMARY -->
+      ${allBlocks}
+
+      <!-- DIVIDER -->
+      <div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:28px 0;"></div>
+
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:15px;color:#5a4a42;line-height:1.9;margin:0 0 12px;">
+        If anything looks incorrect or you need to make changes, simply reply to this email or reach us at
+        <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:#8B1A2B;text-decoration:none;border-bottom:1px solid rgba(139,26,43,0.3);">shivani.akshaypathak@hotmail.com</a>.
+      </p>
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:15px;color:#5a4a42;line-height:1.9;margin:0;">
+        We cannot wait to celebrate with you. See you soon!
+      </p>
+      <p style="font-family:'Great Vibes',Georgia,serif;font-size:28px;color:#8B1A2B;margin:24px 0 0;">With love, Shivani &amp; Akshay</p>
+    </td>
+  </tr>
+
+  <!-- FOOTER -->
+  <tr>
+    <td style="background:#5c0e1a;padding:24px 40px;text-align:center;">
+      <div style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(255,255,255,0.3);">Vaughan, Ontario &middot; August 2026</div>
+    </td>
+  </tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+
+  MailApp.sendEmail({
+    to:       email,
+    subject:  'Your RSVP is confirmed \u2014 Shivani & Akshay, August 2026',
+    htmlBody: html,
+    name:     'Shivani & Akshay Wedding',
+  });
 }
 
 // ── SUBMIT MESSAGE ────────────────────────────────────────────
