@@ -1,10 +1,10 @@
-const IMG_HALDI = "Images/haldi.png";
-const IMG_MEHNDI = "Images/mehndi.png";
-const IMG_SANGEET = "Images/sangeet.png";
-const IMG_BARAAT = "Images/baraat.png";
-const IMG_LAGAN = "Images/lagan.png";
-const IMG_RECEPTION = "Images/reception.png";
-const IMG_INDIA = "Images/india.png";
+const IMG_HALDI = "images/haldi.png";
+const IMG_MEHNDI = "images/mehndi.png";
+const IMG_SANGEET = "images/sangeet.png";
+const IMG_BARAAT = "images/baraat.png";
+const IMG_LAGAN = "images/lagan.png";
+const IMG_RECEPTION = "images/reception.png";
+const IMG_INDIA = "images/india.png";
 
 const CORRECT_PW = "wedding2026";
 
