@@ -6,7 +6,7 @@
       --charcoal: #2a2020; --text-mid: #5a4a42; --text-light: #9a8070;
       --border: rgba(139,26,43,0.13);
     }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: auto; }
     body { font-family: "Raleway", sans-serif; font-weight: 300; background: var(--warm-white); color: var(--charcoal); overflow-x: hidden; }
 
     /* ══ GATE ══ */
@@ -30,56 +30,71 @@
     /* ══ NAV ══ */
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(255,250,245,0.94); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: padding 0.3s; }
     nav.scrolled { padding: 0.75rem 4rem; }
-    .nav-logo { font-family: "Great Vibes", cursive; font-size: 1.9rem; color: var(--crimson); text-decoration: none; }
+    .nav-logo { font-family: "Great Vibes", cursive; font-size: 1.2rem; color: var(--crimson); text-decoration: none; }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-links a { font-family: "Cormorant Garamond", serif; font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; color: var(--text-mid); transition: color 0.25s; }
     .nav-links a:hover { color: var(--crimson); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
     .hamburger span { width: 22px; height: 1px; background: var(--crimson); display: block; }
-    .mob-nav { display: none; position: fixed; inset: 0; background: var(--cream); flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; z-index: 199; }
-    .mob-nav.open { display: flex; }
-    .mob-nav a { font-family: "Cormorant Garamond", serif; font-size: 1.5rem; letter-spacing: 0.12em; color: var(--crimson); text-decoration: none; }
-    .mob-close { position: absolute; top: 1.5rem; right: 2rem; font-size: 1.5rem; color: var(--text-mid); cursor: pointer; }
+    .mob-nav {
+      display: flex; position: fixed; inset: 0;
+      background: var(--cream);
+      flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+      z-index: 199;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity 0.35s ease, visibility 0.35s;
+    }
+    .mob-nav.open { opacity: 1; visibility: visible; pointer-events: auto; }
+    .mob-nav a {
+      font-family: "Cormorant Garamond", serif; font-size: 1.5rem; letter-spacing: 0.12em;
+      color: var(--crimson); text-decoration: none;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.35s ease, transform 0.35s ease, color 0.2s;
+    }
+    .mob-nav.open a {
+      opacity: 1; transform: none;
+    }
+    .mob-nav.open a:nth-child(2) { transition-delay: 0.08s; }
+    .mob-nav.open a:nth-child(3) { transition-delay: 0.14s; }
+    .mob-nav.open a:nth-child(4) { transition-delay: 0.20s; }
+    .mob-nav.open a:nth-child(5) { transition-delay: 0.26s; }
+    .mob-nav.open a:nth-child(6) { transition-delay: 0.32s; }
+    .mob-nav a:hover { color: var(--gold); }
+    .mob-close { position: absolute; top: 1.5rem; right: 2rem; font-size: 1.5rem; color: var(--text-mid); cursor: pointer; transition: color 0.2s; }
+    .mob-close:hover { color: var(--crimson); }
 
     /* ══ HERO ══ */
     #hero {
       min-height: 100vh; display: flex; flex-direction: column;
       align-items: center; justify-content: center; text-align: center;
-      padding: 7rem 2rem 5rem;
-      background: var(--warm-white); position: relative; overflow: hidden;
+      padding: 8rem 2rem 6rem;
+      background-image: url("images/gate-bg.png");
+      background-size: cover; background-position: center;
+      position: relative; overflow: hidden;
     }
     #hero::before {
       content: ""; position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.09) 0%, transparent 55%),
-        radial-gradient(ellipse at 50% 100%, rgba(139,26,43,0.05) 0%, transparent 55%);
+      background: rgba(28,5,10,0.55);
       pointer-events: none;
     }
     /* subtle corner ornaments */
     #hero::after {
       content: ""; position: absolute; inset: 2.5rem;
-      border: 1px solid rgba(201,168,76,0.18);
+      border: 1px solid rgba(201,168,76,0.22);
       pointer-events: none;
     }
     .hero-eyebrow { font-family: "Cormorant Garamond", serif; font-size: 0.75rem; letter-spacing: 0.55em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; z-index: 2; animation: fadeUp 0.8s ease both; }
-    .hero-name { font-family: "Great Vibes", cursive; font-size: clamp(5rem, 11vw, 10rem); color: var(--crimson); line-height: 1; z-index: 2; }
+    .hero-name { font-family: "Great Vibes", cursive; font-size: clamp(5rem, 11vw, 10rem); color: var(--gold-light); line-height: 1; z-index: 2; }
     .hero-name.n1 { animation: fadeUp 0.9s ease 0.08s both; }
     .hero-and { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(1rem,2.2vw,1.6rem); color: var(--gold); margin: 0.3rem 0; z-index: 2; animation: fadeUp 0.9s ease 0.14s both; }
     .hero-name.n2 { animation: fadeUp 0.9s ease 0.2s both; }
     .hero-rule { width: 100px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 2.2rem auto; z-index: 2; animation: fadeUp 0.9s ease 0.26s both; }
-    .hero-tagline { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(1rem,1.8vw,1.35rem); color: var(--text-mid); line-height: 2; max-width: 500px; z-index: 2; animation: fadeUp 0.9s ease 0.3s both; }
-    .hero-date { font-family: "Raleway", sans-serif; font-size: 0.7rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--text-light); margin-top: 1.2rem; z-index: 2; animation: fadeUp 0.9s ease 0.34s both; }
-    .hero-cta { display: inline-block; margin-top: 2.5rem; font-family: "Cormorant Garamond", serif; font-size: 0.82rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--crimson); text-decoration: none; border: 1px solid var(--crimson); padding: 0.95rem 3rem; transition: background 0.3s, color 0.3s; z-index: 2; animation: fadeUp 0.9s ease 0.4s both; }
-    .hero-cta:hover { background: var(--crimson); color: #fff; }
-
-    /* ══ WELCOME ══ */
-    #welcome { position: relative; overflow: hidden; min-height: 360px; display: flex; align-items: center; justify-content: center; }
-    .welcome-bg { position: absolute; inset: 0; background-image: url("images/gate-bg.png"); background-size: cover; background-position: center 40%; }
-    .welcome-bg::after { content: ""; position: absolute; inset: 0; background: rgba(50,6,12,0.78); }
-    .welcome-inner { position: relative; z-index: 1; text-align: center; padding: 5rem 2rem; max-width: 680px; }
-    .welcome-label { font-family: "Cormorant Garamond", serif; font-size: 0.72rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1.2rem; display: block; }
-    .welcome-rule { width: 60px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold-light),transparent); margin: 0 auto 1.8rem; }
-    .welcome-text { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(1.05rem,2.5vw,1.3rem); color: rgba(255,255,255,0.85); line-height: 2; }
+    .hero-tagline { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(1rem,1.8vw,1.35rem); color: rgba(255,255,255,0.82); line-height: 2; max-width: 500px; z-index: 2; animation: fadeUp 0.9s ease 0.3s both; }
+    .hero-date { font-family: "Raleway", sans-serif; font-size: 0.7rem; letter-spacing: 0.45em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-top: 1.2rem; z-index: 2; animation: fadeUp 0.9s ease 0.34s both; }
+    .hero-divider { width: 60px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 2.8rem auto 2.4rem; z-index: 2; animation: fadeUp 0.9s ease 0.38s both; }
+    .hero-welcome { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(1rem,2vw,1.2rem); color: rgba(255,255,255,0.75); line-height: 2; max-width: 580px; z-index: 2; animation: fadeUp 0.9s ease 0.42s both; }
+    .hero-cta { display: inline-block; margin-top: 2.8rem; font-family: "Cormorant Garamond", serif; font-size: 0.82rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-light); text-decoration: none; border: 1px solid var(--gold); padding: 0.95rem 3rem; transition: background 0.3s, color 0.3s; z-index: 2; animation: fadeUp 0.9s ease 0.48s both; }
+    .hero-cta:hover { background: var(--gold); color: var(--crimson-dark); }
 
     /* ══ SHARED SECTION ══ */
     .sec-wrap { max-width: 1100px; margin: 0 auto; }
@@ -100,9 +115,9 @@
     .event-card:hover .event-img { transform: scale(1.03); }
     .event-body { padding: 1.6rem 2rem 1.8rem; }
     .event-badge { display: inline-block; font-family: "Raleway", sans-serif; font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; background: var(--crimson); color: #fff; padding: 0.2rem 0.75rem; margin-bottom: 0.5rem; }
-    .event-name { font-family: "Cormorant Garamond", serif; font-size: 1.65rem; font-weight: 500; color: var(--crimson); margin-bottom: 0.2rem; }
+    .event-name { font-family: "Cormorant Garamond", serif; font-size: 1.3rem; font-weight: 500; color: var(--crimson); margin-bottom: 0.2rem; }
     .event-time { font-family: "Raleway", sans-serif; font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
-    .event-desc { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.05rem; color: var(--text-mid); line-height: 1.8; margin-bottom: 0.8rem; }
+    .event-desc { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 0.9rem; color: var(--text-mid); line-height: 1.4; margin-bottom: 1rem; }
     .event-chips { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
     .event-chip { font-family: "Raleway", sans-serif; font-size: 0.68rem; letter-spacing: 0.12em; color: var(--text-light); display: flex; align-items: center; gap: 0.4rem; }
     .event-chip::before { content: "◆"; color: var(--gold); font-size: 0.42rem; }
@@ -163,7 +178,7 @@
     .tm-address { font-family: "Cormorant Garamond", serif; font-size: 1rem; color: var(--text-mid); font-style: normal; line-height: 1.9; }
     .tm-phone { font-family: "Raleway", sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold); margin-top: 0.6rem; }
     .tm-list { list-style: none; padding: 0; margin-top: 0.25rem; }
-    .tm-list li { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1rem; color: var(--text-mid); padding: 0.45rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 0.5rem; }
+    .tm-list li { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1rem; color: var(--text-mid); padding: 0.2rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 0.3rem; }
     .tm-list li:last-child { border-bottom: none; }
     .tm-list li::before { content: "◆"; color: var(--gold); font-size: 0.38rem; flex-shrink: 0; }
 
@@ -186,8 +201,9 @@
     .faq-q { font-family: "Cormorant Garamond", serif; font-size: 1.1rem; font-weight: 500; color: var(--crimson); display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
     .faq-plus { font-size: 1.3rem; color: var(--gold); transition: transform 0.3s; flex-shrink: 0; }
     .faq-item.open .faq-plus { transform: rotate(45deg); }
-    .faq-a { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.05rem; color: var(--text-mid); line-height: 1.85; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding-top 0.3s; }
-    .faq-item.open .faq-a { max-height: 500px; padding-top: 1rem; }
+    .faq-a { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.05rem; color: var(--text-mid); line-height: 1.85; display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s ease, padding-top 0.35s ease; }
+    .faq-a > span { overflow: hidden; }
+    .faq-item.open .faq-a { grid-template-rows: 1fr; padding-top: 1rem; }
 
     /* ══ MESSAGES ══ */
     #messages { background: var(--cream); }
@@ -323,17 +339,51 @@
       .events-grid { grid-template-columns: 1fr 1fr; }
     }
     @media(max-width:640px) {
-      nav { padding: 1rem 1.5rem; } nav.scrolled { padding: 0.7rem 1.5rem; }
-      .nav-links { display: none; } .hamburger { display: flex; }
-      #schedule, #faq, #rsvp { padding: 4rem 1.25rem; }
-      .travel-header { padding: 4rem 1.25rem 2rem; }
-      .event-img { height: 220px; }
+      /* Nav */
+      nav { padding: 1rem 1.5rem; }
+      nav.scrolled { padding: 0.7rem 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      /* Hero */
+      #hero { padding: 5.5rem 1.5rem 4rem; }
+      #hero::after { display: none; }
+      .hero-rule { margin: 1.5rem auto; }
+      .hero-divider { margin: 2rem auto 1.6rem; }
+      .hero-and { font-size: 1.1rem; }
+      .hero-welcome { font-size: 1rem; }
+
+      /* Sections */
+      #schedule, #faq, #rsvp { padding: 3.5rem 1.25rem; }
+      .travel-header { padding: 3.5rem 1.25rem 2rem; }
+      .event-img { height: 200px; }
+      .event-body { padding: 1.2rem 1.25rem 1.5rem; }
+
+      /* Travel — hide image panels, show info cards only */
       .travel-mosaic {
         grid-template-columns: 1fr;
-        grid-template-areas: "photo" "hotel" "flying" "venue" "bridge" "around" "todo";
-        padding: 0 1.25rem 4rem;
+        grid-template-areas: "hotel" "flying" "venue" "around" "todo";
+        padding: 0 1.25rem 3.5rem;
         gap: 1rem;
       }
-      .tm-photo { min-height: 260px; }
-      .tm-bridge { min-height: 200px; }
+      .tm-photo, .tm-bridge { display: none; }
+      .tm-hotel { padding: 1.75rem 1.5rem; }
+      .tm-info { padding: 1.5rem 1.25rem; }
+
+      /* Messages — hidden on mobile */
+      #messages { display: none; }
+
+      /* FAQ */
+      .faq-q { font-size: 1rem; }
+      .faq-a { font-size: 0.98rem; }
+
+      /* Footer */
+      footer { padding: 2.5rem 1.5rem; }
+      .f-names { font-size: 2.2rem; }
+    }
+
+    @media(max-width:400px) {
+      .hero-name { font-size: clamp(3.8rem, 18vw, 5rem); }
+      .gate-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+      .tm-hotel { padding: 1.5rem 1.25rem; }
     }

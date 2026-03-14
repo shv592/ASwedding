@@ -1,3 +1,5 @@
+if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
+
 const IMG_HALDI = "images/haldi.png";
 const IMG_MEHNDI = "images/mehndi.png";
 const IMG_SANGEET = "images/sangeet.png";
@@ -154,6 +156,38 @@ const CORRECT_PW = "wedding2026";
         statusEl.textContent = 'Something went wrong. Please try again.';
       });
   };
+
+  // ── Smooth nav scroll ────────────────────────────────────────
+  function smoothScrollTo(target, duration) {
+    const start    = window.scrollY;
+    const end      = target.getBoundingClientRect().top + start;
+    const distance = end - start;
+    let startTime  = null;
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+    }
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const elapsed  = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, start + distance * easeInOutCubic(progress));
+      if (progress < 1) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  document.addEventListener('click', e => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const id = link.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    smoothScrollTo(el, 900);
+  });
 
   function initScroll() {
     const io = new IntersectionObserver(entries => {
