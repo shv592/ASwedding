@@ -94,7 +94,11 @@
 
     /* ── STEPS ───────────────────────────────────────────── */
     .rsvp-step { display: none; width: 100%; max-width: 720px; }
-    .rsvp-step.active { display: block; }
+    .rsvp-step.active { display: block; animation: stepIn 0.42s ease both; }
+    .rsvp-step.leaving { animation: stepOut 0.22s ease both; }
+
+    @keyframes stepIn  { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    @keyframes stepOut { from { opacity: 1; transform: none; }             to { opacity: 0; transform: translateY(-10px); } }
 
     /* ── WHITE CARD ──────────────────────────────────────── */
     .rsvp-card {
@@ -171,6 +175,27 @@
     }
     .name-row input::placeholder { color: var(--text-light); font-style: italic; }
     .name-row input:focus { border-color: var(--crimson); }
+
+    /* Loading spinner */
+    .search-btn.loading { position: relative; color: transparent !important; }
+    .search-btn.loading::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 16px;
+      height: 16px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      color: var(--crimson);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Stagger-in for match buttons and member cards */
+    .match-btn   { opacity: 0; animation: stepIn 0.35s ease both; }
+    .member-card { opacity: 0; animation: stepIn 0.4s  ease both; }
 
     /* Search button */
     .search-btn {
@@ -749,10 +774,19 @@ function collectRsvp(type, idx) {
 
 // ── showStep ─────────────────────────────────────────────────
 function showStep(id) {
-  document.querySelectorAll('.rsvp-step').forEach(function(el) {
-    el.classList.remove('active');
-  });
-  document.getElementById(id).classList.add('active');
+  var current = document.querySelector('.rsvp-step.active');
+  var next    = document.getElementById(id);
+  if (!next || current === next) return;
+
+  if (current) {
+    current.classList.add('leaving');
+    setTimeout(function() {
+      current.classList.remove('active', 'leaving');
+      next.classList.add('active');
+    }, 220);
+  } else {
+    next.classList.add('active');
+  }
 }
 
 // ── searchGuest ──────────────────────────────────────────────
@@ -771,8 +805,8 @@ function searchGuest(e) {
     return;
   }
 
-  btn.textContent = 'Searching\u2026';
-  btn.disabled    = true;
+  btn.classList.add('loading');
+  btn.disabled = true;
 
   const url = APPS_SCRIPT_URL
     + '?action=lookup'
@@ -782,8 +816,8 @@ function searchGuest(e) {
   fetch(url, { credentials: 'omit' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      btn.textContent = 'Find My Invitation';
-      btn.disabled    = false;
+      btn.classList.remove('loading');
+      btn.disabled = false;
 
       if (data.error) {
         errorEl.textContent = 'Something went wrong. Please try again.';
@@ -813,12 +847,21 @@ function searchGuest(e) {
 
       // Store data and show "Is this you?" confirmation before the form
       _groupData = data;
-      _pendingWelcomeName = (firstName + ' ' + lastName).trim();
+      // Find the member whose name best matches the search inputs so we always
+      // show the full name (first + last) regardless of what the user typed.
+      var searchTerm = (firstName + ' ' + lastName).trim().toLowerCase();
+      var matched = data.members.find(function(m) {
+        var full = (m.firstName + ' ' + m.lastName).trim().toLowerCase();
+        return full === searchTerm
+          || m.firstName.toLowerCase() === searchTerm
+          || m.lastName.toLowerCase() === searchTerm;
+      }) || data.members[0];
+      _pendingWelcomeName = (matched.firstName + ' ' + matched.lastName).trim();
       showVerifyStep(data);
     })
     .catch(function() {
-      btn.textContent = 'Find My Invitation';
-      btn.disabled    = false;
+      btn.classList.remove('loading');
+      btn.disabled = false;
       errorEl.textContent = 'Network error. Please check your connection and try again.';
     });
 }
@@ -859,6 +902,7 @@ function buildMatchSelection(matches) {
   matches.forEach(function(match) {
     var btn = document.createElement('button');
     btn.className = 'match-btn';
+    btn.style.animationDelay = (matches.indexOf(match) * 80) + 'ms';
 
     var nameDiv = document.createElement('div');
     nameDiv.style.fontWeight = '600';
@@ -930,6 +974,7 @@ function buildForm(firstName, data) {
   data.members.forEach(function(member, idx) {
     var card = document.createElement('div');
     card.className = 'member-card';
+    card.style.animationDelay = (idx * 90) + 'ms';
 
     var nameLabel = document.createElement('span');
     nameLabel.className = 'member-name-label';
