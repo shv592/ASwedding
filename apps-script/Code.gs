@@ -64,21 +64,23 @@ function handleLookup(params) {
   // Find all matching rows
   const matchingRows = [];
   for (let r = 1; r < data.length; r++) {
-    const fullName = String(data[r][COL_NAME] || '').trim();
-    if (!fullName) continue;
+    const cellVal = String(data[r][COL_NAME] || '').trim();
+    if (!cellVal) continue;
 
-    const parts     = fullName.toLowerCase().split(' ');
+    const nameLower = cellVal.toLowerCase();
+    const parts     = nameLower.split(' ');
     const rowFirst  = parts[0] || '';
     const rowLast   = parts.slice(1).join(' ');
 
     let matched = false;
+
     if (firstRaw && lastRaw) {
-      // Both entered — match exact full name
+      // Both fields filled — require exact first + last match
       matched = (rowFirst === firstRaw && rowLast === lastRaw);
-    } else if (firstRaw) {
-      matched = rowFirst === firstRaw;
     } else {
-      matched = rowLast === lastRaw;
+      // Only one field filled — check the search term against first name, last name, and full name
+      const term = firstRaw ? firstRaw : lastRaw;
+      matched = (rowFirst === term || rowLast === term || nameLower === term);
     }
 
     if (matched) matchingRows.push(r);
