@@ -970,12 +970,6 @@ function selectMatch(groupId, clickedName) {
     showStep('step-form');
   }
 
-  // Use cached data when available — avoids a redundant API round-trip
-  if (_groupCache[groupId]) {
-    handleGroup(_groupCache[groupId]);
-    return;
-  }
-
   fetch(APPS_SCRIPT_URL + '?action=getGroup&groupId=' + encodeURIComponent(groupId), { credentials: 'omit' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
