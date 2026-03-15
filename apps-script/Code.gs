@@ -362,10 +362,10 @@ function sendConfirmationEmail(email, submittedBy, members, additional) {
 
   <!-- HEADER -->
   <tr>
-    <td style="background:#32060c;padding:48px 40px 40px;text-align:center;">
-      <div style="width:100px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:0 auto 20px;"></div>
-      <div style="font-family:'Great Vibes',Georgia,serif;font-size:52px;color:#e4c97e;line-height:1;margin-bottom:8px;">Shivani &amp; Akshay</div>
-      <div style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;">August 21 &ndash; 22, 2026 &middot; Vaughan, Ontario</div>
+    <td style="background:#6b1220;background-image:linear-gradient(rgba(60,6,14,0.72),rgba(60,6,14,0.72)),url('https://shivanibhat.github.io/ASwedding/images/gate-bg.png');background-size:cover;background-position:center;padding:52px 40px 44px;text-align:center;">
+      <div style="width:100px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:0 auto 22px;"></div>
+      <div style="font-family:'Great Vibes',Georgia,serif;font-size:56px;color:#e4c97e;line-height:1.1;margin-bottom:8px;">Shivani &amp; Akshay</div>
+      <div style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:22px;">August 21 &ndash; 22, 2026 &middot; Vaughan, Ontario</div>
       <div style="width:100px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:0 auto;"></div>
     </td>
   </tr>
@@ -401,7 +401,8 @@ function sendConfirmationEmail(email, submittedBy, members, additional) {
       <p style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:15px;color:#5a4a42;line-height:1.9;margin:0;">
         We cannot wait to celebrate with you. See you soon!
       </p>
-      <p style="font-family:'Great Vibes',Georgia,serif;font-size:28px;color:#8B1A2B;margin:24px 0 0;">With love, Shivani &amp; Akshay</p>
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:16px;color:#5a4a42;margin:24px 0 4px;">With love,</p>
+      <p style="font-family:'Great Vibes',Georgia,serif;font-size:32px;color:#8B1A2B;margin:0;">Shivani &amp; Akshay</p>
     </td>
   </tr>
 
@@ -420,6 +421,7 @@ function sendConfirmationEmail(email, submittedBy, members, additional) {
 
   MailApp.sendEmail({
     to:       email,
+    replyTo:  'shivani.akshaypathak@hotmail.com',
     subject:  'Your RSVP is confirmed \u2014 Shivani & Akshay, August 2026',
     htmlBody: html,
     name:     'Shivani & Akshay Wedding',

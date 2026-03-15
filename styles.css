@@ -316,6 +316,7 @@
     .f-contact { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 0.92rem; color: rgba(255,255,255,0.3); }
     .f-contact a { color: rgba(255,255,255,0.45); text-decoration: none; }
     .f-contact a:hover { color: var(--gold-light); }
+    .f-made { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 0.78rem; color: rgba(255,255,255,0.2); margin-top: 1rem; letter-spacing: 0.08em; }
 
     @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
 
