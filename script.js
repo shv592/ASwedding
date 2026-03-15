@@ -68,7 +68,7 @@ const CORRECT_PW = "wedding2026";
     document.querySelectorAll(".faq-item.open").forEach(i => i.classList.remove("open"));
     if (!was) el.classList.add("open");
   }
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhpH8Dp7CcOLIvyPhYCn1dSebHCMibiAmRkDZGPViJM5O-9_tJKMAfy7Oge5eSfuU/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWGnHQ9fE8tRoLolgLiuykcAC9IholKxzBrjJUidkUtIgFTYImMBKKMHqArN01oHk/exec';
 
   // ── Messages carousel ────────────────────────────────────────
   let _msgTimer = null;

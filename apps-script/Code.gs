@@ -220,12 +220,12 @@ function handleSubmit(params) {
   if (!respSheet) {
     respSheet = ss.insertSheet(RESPONSE_SHEET_NAME);
     respSheet.appendRow([
-      'Timestamp', 'Group ID', 'Submitted By', 'Name', 'Guest Type',
+      'Timestamp', 'Group ID', 'Submitted By', 'Email', 'Name', 'Guest Type',
       'Haldi & Devgon', 'Mehndi & Sangeet', 'Baraat & Lagan',
       'Cocktail & Reception', 'India Reception', 'Side',
     ]);
     respSheet.setFrozenRows(1);
-    respSheet.getRange(1, 1, 1, 11).setFontWeight('bold');
+    respSheet.getRange(1, 1, 1, 12).setFontWeight('bold');
   }
 
   const timestamp   = new Date().toISOString();
@@ -235,7 +235,7 @@ function handleSubmit(params) {
 
   function buildRow(name, guestType, side, rsvp) {
     return [
-      timestamp, groupId, submittedBy, name, guestType,
+      timestamp, groupId, submittedBy, email, name, guestType,
       rsvp['haldi']           || '',
       rsvp['sangeet']         || '',
       rsvp['lagan']           || '',
