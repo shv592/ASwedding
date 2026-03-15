@@ -3,298 +3,1214 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shivani &amp; Akshay — August 2026</title>
+  <title>RSVP — Shivani &amp; Akshay</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="styles.css?v=4"/>
-  <script>if(sessionStorage.getItem('siteUnlocked')==='1'){document.documentElement.setAttribute('data-unlocked','1');}</script>
-  <style>html[data-unlocked="1"] #gate{display:none!important;}html[data-unlocked="1"] #site{display:block!important;}</style>
+  <link rel="stylesheet" href="styles.css?v=1"/>
+  <style>
+    /* ── PAGE SHELL ──────────────────────────────────────── */
+    body {
+      font-family: "Raleway", sans-serif;
+      font-weight: 300;
+      background: var(--warm-white);
+      color: var(--charcoal);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ────────────────────────────────────────────── */
+    .rsvp-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(255,250,245,0.97);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .rsvp-nav .nav-logo {
+      font-family: "Great Vibes", cursive;
+      font-size: 1.9rem;
+      color: var(--crimson);
+      text-decoration: none;
+    }
+    .rsvp-nav .nav-back {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text-mid);
+      transition: color 0.25s;
+    }
+    .rsvp-nav .nav-back:hover { color: var(--crimson); }
+
+    /* ── HERO BANNER ─────────────────────────────────────── */
+    .rsvp-hero {
+      background-image: url("images/rsvp-bg.png");
+      background-size: cover;
+      background-position: center top;
+      position: relative;
+      padding: 6rem 2rem 5rem;
+      text-align: center;
+    }
+    .rsvp-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(55,8,14,0.83);
+    }
+    .rsvp-hero-inner { position: relative; z-index: 1; }
+    .rsvp-hero-title {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(3.5rem, 9vw, 5.5rem);
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+    .rsvp-hero-rule {
+      width: 55px;
+      height: 1px;
+      background: var(--gold);
+      margin: 1rem auto;
+    }
+    .rsvp-hero-sub {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ── MAIN AREA ───────────────────────────────────────── */
+    .rsvp-main {
+      flex: 1;
+      padding: 4.5rem 2rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    /* ── STEPS ───────────────────────────────────────────── */
+    .rsvp-step { display: none; width: 100%; max-width: 720px; }
+    .rsvp-step.active { display: block; animation: stepIn 0.42s ease both; }
+    .rsvp-step.leaving { animation: stepOut 0.22s ease both; }
+
+    @keyframes stepIn  { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    @keyframes stepOut { from { opacity: 1; transform: none; }             to { opacity: 0; transform: translateY(-10px); } }
+
+    /* ── WHITE CARD ──────────────────────────────────────── */
+    .rsvp-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 3rem;
+      width: 100%;
+      position: relative;
+    }
+    .rsvp-card::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--crimson), var(--gold));
+    }
+
+    /* ── TYPOGRAPHY HELPERS ──────────────────────────────── */
+    .step-eye {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+    .step-head {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      color: var(--crimson);
+      margin-bottom: 0.5rem;
+    }
+    .step-rule {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin-bottom: 2rem;
+    }
+    .step-sub {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.08rem;
+      color: var(--text-mid);
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── GOLD DIVIDER ────────────────────────────────────── */
+    .gold-rule {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 2rem 0;
+    }
+
+    /* ── STEP 1: SEARCH FORM ─────────────────────────────── */
+    .name-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .name-row input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      padding: 0.85rem 1rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .name-row input::placeholder { color: var(--text-light); font-style: italic; }
+    .name-row input:focus { border-color: var(--crimson); }
+
+    /* Loading spinner */
+    .search-btn.loading { position: relative; color: transparent !important; }
+    .search-btn.loading::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 16px;
+      height: 16px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      color: var(--crimson);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Stagger-in for match buttons and member cards */
+    .match-btn   { opacity: 0; animation: stepIn 0.35s ease both; }
+    .member-card { opacity: 0; animation: stepIn 0.4s  ease both; }
+
+    /* Search button */
+    .search-btn {
+      display: inline-block;
+      background: transparent;
+      border: 1px solid var(--crimson);
+      color: var(--crimson);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 0.95rem 3rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    .search-btn:hover:not(:disabled) { background: var(--crimson); color: #fff; }
+    .search-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* Error message */
+    .search-error {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      color: var(--crimson);
+      font-size: 0.95rem;
+      margin-top: 1rem;
+      min-height: 1.2em;
+    }
+
+    /* Deadline note */
+    .deadline-note {
+      font-family: "Raleway", sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 1.75rem;
+      display: block;
+    }
+
+    /* Closed message */
+    .closed-msg {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.08rem;
+      color: var(--text-mid);
+      line-height: 1.85;
+    }
+
+    /* ── EMAIL INPUT ─────────────────────────────────────── */
+    .email-row { margin-bottom: 1.5rem; }
+    .email-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      padding: 0.8rem 1rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+      outline: none;
+      margin-top: 0.4rem;
+      transition: border-color 0.25s;
+    }
+    .email-input::placeholder { color: var(--text-light); font-style: italic; }
+    .email-input:focus { border-color: var(--crimson); }
+
+    /* ── VERIFY IDENTITY NAME LIST ──────────────────────── */
+    .verify-name-item {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--crimson);
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .verify-name-item:last-child { border-bottom: none; }
+
+    /* ── MATCH SELECTION BUTTONS ────────────────────────── */
+    .match-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.1rem;
+      color: var(--charcoal);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .match-btn:hover { border-color: var(--crimson); background: var(--cream); color: var(--crimson); }
+
+    /* ── STEP 2: RSVP FORM ───────────────────────────────── */
+
+    /* Member card */
+    .member-card {
+      border: 1px solid var(--border);
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.25rem;
+      background: var(--warm-white);
+    }
+    .member-name {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--crimson);
+      margin-bottom: 1.1rem;
+    }
+    .member-name-input {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--crimson);
+      border: none;
+      border-bottom: 1px dashed rgba(139,26,43,0.3);
+      background: transparent;
+      outline: none;
+      width: 100%;
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.2rem;
+      transition: border-color 0.2s;
+    }
+    .member-name-input:focus { border-bottom-color: var(--crimson); }
+    .member-name-label {
+      font-family: "Raleway", sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    /* Event row */
+    .event-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .event-row:last-child { border-bottom: none; }
+    .event-label-wrap { flex: 1; }
+    .event-label-name {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1rem;
+      color: var(--charcoal);
+    }
+    .event-label-date {
+      font-family: "Raleway", sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 0.1rem;
+    }
+
+    /* YES / NO toggle */
+    .toggle-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+    .toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-light);
+      font-family: "Raleway", sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .toggle-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+    .toggle-btn.active {
+      background: var(--crimson);
+      border-color: var(--crimson);
+      color: #fff;
+    }
+    .toggle-btn.active-no {
+      background: var(--text-light);
+      border-color: var(--text-light);
+      color: #fff;
+    }
+
+    /* Additional guests section */
+    .addl-section { margin-top: 2rem; }
+    .addl-head {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--crimson);
+      margin-bottom: 0.4rem;
+    }
+    .addl-note {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--text-mid);
+      margin-bottom: 1.25rem;
+    }
+    .addl-guest-card {
+      border: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--cream);
+    }
+    .addl-name-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      padding: 0.7rem 0.9rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1rem;
+      color: var(--charcoal);
+      outline: none;
+      margin-bottom: 1rem;
+      transition: border-color 0.25s;
+    }
+    .addl-name-input::placeholder { color: var(--text-light); font-style: italic; }
+    .addl-name-input:focus { border-color: var(--crimson); }
+    .addl-guest-num {
+      font-family: "Raleway", sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Submit button */
+    .submit-btn {
+      display: block;
+      width: 100%;
+      margin-top: 2rem;
+      background: transparent;
+      border: 1px solid var(--crimson);
+      color: var(--crimson);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 1.1rem 2rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      text-align: center;
+    }
+    .submit-btn:hover:not(:disabled) { background: var(--crimson); color: #fff; }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* Back link */
+    .back-link {
+      display: inline-block;
+      margin-top: 1.25rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.92rem;
+      color: var(--text-mid);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--crimson); }
+
+    /* ── STEP 3: CONFIRMATION ────────────────────────────── */
+    .confirm-card {
+      text-align: center;
+      padding: 3.5rem 3rem;
+    }
+    .confirm-title {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(3rem, 7vw, 4.5rem);
+      color: var(--crimson);
+      margin-bottom: 1rem;
+    }
+    .confirm-msg {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-mid);
+      line-height: 1.9;
+      max-width: 480px;
+      margin: 0 auto 1.5rem;
+    }
+    .confirm-ornament {
+      font-size: 1.1rem;
+      color: var(--gold);
+      letter-spacing: 0.4em;
+      margin: 1.5rem 0;
+      display: block;
+    }
+    .confirm-contact {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+    }
+    .confirm-contact a { color: var(--crimson); text-decoration: none; }
+    .confirm-contact a:hover { text-decoration: underline; }
+    .home-btn {
+      display: inline-block;
+      background: transparent;
+      border: 1px solid var(--crimson);
+      color: var(--crimson);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 0.95rem 3rem;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .home-btn:hover { background: var(--crimson); color: #fff; }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    .rsvp-footer {
+      background: var(--crimson-dark);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .rsvp-footer .f-names {
+      font-family: "Great Vibes", cursive;
+      font-size: 2.4rem;
+      color: var(--gold-light);
+      margin-bottom: 0.3rem;
+    }
+    .rsvp-footer .f-date {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+    }
+
+    /* ── ALREADY RSVPED NOTICE ───────────────────────────── */
+    .already-notice {
+      border: 1px solid var(--gold);
+      background: rgba(201,168,76,0.07);
+      padding: 1.5rem 1.75rem;
+      margin-top: 1.5rem;
+    }
+    .already-notice p {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-mid);
+      line-height: 1.85;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .rsvp-nav { padding: 1rem 1.5rem; }
+      .rsvp-card { padding: 2rem 1.25rem; }
+      .confirm-card { padding: 2.5rem 1.25rem; }
+      .name-row { grid-template-columns: 1fr; }
+      .member-card { padding: 1.25rem; }
+      .toggle-btn { padding: 0.4rem 0.7rem; font-size: 0.65rem; }
+    }
+  </style>
 </head>
 <body>
+  <div id="page-veil" style="position:fixed;inset:0;z-index:99998;background:#fffaf5;opacity:1;transition:opacity 0.45s ease;pointer-events:none;"></div>
 
-<div id="page-veil" style="position:fixed;inset:0;z-index:99998;background:#fffaf5;opacity:0;transition:opacity 0.4s ease;pointer-events:none;"></div>
-
-<!-- GATE -->
-<div id="gate">
-  <div class="gate-orn"></div>
-  <div class="gate-title">Shivani &amp; Akshay</div>
-  <div class="gate-sub">August 2026 · Vaughan, Ontario</div>
-  <div class="gate-orn"></div>
-  <div class="gate-form">
-    <input type="password" id="pw-input" placeholder="Enter password" autocomplete="off"/>
-    <button class="gate-btn" onclick="checkPw()">Enter</button>
-    <div id="pw-error"></div>
-  </div>
-</div>
-
-<!-- SITE -->
-<div id="site">
-
-  <nav id="nav">
-    <a href="#hero" class="nav-logo">Shivani &amp; Akshay</a>
-    <ul class="nav-links">
-      <li><a href="#hero">Welcome</a></li>
-      <li><a href="#schedule">Events</a></li>
-      <li><a href="#travel">Travel</a></li>
-      <li><a href="#rsvp">RSVP</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#messages">Messages</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-    <div class="hamburger" onclick="openNav()"><span></span><span></span><span></span></div>
+  <!-- NAV -->
+  <nav class="rsvp-nav">
+    <a href="index.html" class="nav-logo">Shivani &amp; Akshay</a>
+    <a href="index.html" class="nav-back">&#8592; Back to Main Site</a>
   </nav>
-  <div class="mob-nav" id="mob-nav">
-    <span class="mob-close" onclick="closeNav()">&#10005;</span>
-    <a href="#hero" onclick="closeNav()">Welcome</a>
-    <a href="#schedule" onclick="closeNav()">Events</a>
-    <a href="#travel" onclick="closeNav()">Travel</a>
-    <a href="#rsvp" onclick="closeNav()">RSVP</a>
-    <a href="#faq" onclick="closeNav()">FAQ</a>
-    <a href="contact.html" onclick="closeNav()">Contact</a>
-  </div>
 
   <!-- HERO -->
-  <section id="hero">
-    <p class="hero-eyebrow">August 21 – 22, 2026</p>
-    <div class="hero-name n1">Shivani</div>
-    <div class="hero-and">and</div>
-    <div class="hero-name n2">Akshay</div>
-    <div class="hero-rule"></div>
-    <p class="hero-tagline">Together with their families,<br/>invite you to their wedding celebration.</p>
-    <p class="hero-date">Vaughan, Ontario &nbsp;·&nbsp; Canada</p>
-    <div class="hero-divider"></div>
-    <p class="hero-welcome">We are so grateful to have you here and look forward to celebrating this special time with you. Please explore the site for details about the ceremonies, events, and travel information. We can&rsquo;t wait to share these moments with our family and friends.</p>
-    <a href="#rsvp" class="hero-cta">RSVP Now</a>
-  </section>
+  <div class="rsvp-hero">
+    <div class="rsvp-hero-inner">
+      <div class="rsvp-hero-title">RSVP</div>
+      <div class="rsvp-hero-rule"></div>
+      <p class="rsvp-hero-sub">Shivani &amp; Akshay &middot; August 21&ndash;22, 2026</p>
+    </div>
+  </div>
 
-  <!-- SCHEDULE -->
-  <section id="schedule">
-    <div class="sec-wrap">
-      <span class="sec-eye">Join Us</span>
-      <div class="sec-head">The Celebrations</div>
-      <div class="sec-rule"></div>
+  <!-- MAIN -->
+  <div class="rsvp-main">
 
-      <!-- Aug 21: Haldi + Mehndi + Sangeet all 3 side by side -->
-      <div class="day-sep"><div class="day-sep-line"></div><div class="day-sep-txt">August 21, 2026</div><div class="day-sep-line"></div></div>
-      <div class="events-grid">
-        <div class="event-card">
-          <img id="img-haldi" class="event-img" src="" alt="Haldi & Devgon" style="object-position:center top"/>
-          <div class="event-body">
-            <span class="event-badge">August 21 — Morning</span>
-            <div class="event-name">Haldi &amp; Devgon</div>
-            <div class="event-time">10:00 am – 2:00 pm</div>
-            <p class="event-desc">A joyful pre-wedding celebration where turmeric paste (Haldi) is applied to the bride and groom as a blessing for prosperity. This is followed by Devgon, a traditional Kashmiri puja for the bride where she is donned in new clothes in preparation for the wedding. Lunch will be served.</p>
-            <div class="event-chips"><span class="event-chip">Ascott Parc, Gazebo Area</span><span class="event-chip">Indian Traditional Attire</span></div>
-          </div>
+    <!-- ── STEP 1: SEARCH ─────────────────────────────────── -->
+    <div class="rsvp-step active" id="step-search">
+      <div class="rsvp-card">
+        <span class="step-eye">Find Your Invitation</span>
+        <div class="step-head">Enter Your Name</div>
+        <div class="step-rule"></div>
+
+        <!-- Closed state (hidden unless past deadline) -->
+        <div id="closed-state" style="display:none;">
+          <p class="closed-msg">RSVP is now closed. If you have questions, please reach out at
+            <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:var(--crimson)">shivani.akshaypathak@hotmail.com</a>.
+          </p>
         </div>
-        <div class="event-card">
-          <img id="img-mehndi" class="event-img" src="" alt="Mehndi"/>
-          <div class="event-body">
-            <span class="event-badge">August 21 — Evening</span>
-            <div class="event-name">Mehndi</div>
-            <div class="event-time">6:00 pm – 10:00 pm</div>
-            <p class="event-desc">Guests and family can enjoy getting intricate henna designs in a festive atmosphere. A beautiful pre-wedding tradition celebrating artistry and joy. Dinner will be served.</p>
-            <div class="event-chips"><span class="event-chip">Ascott Parc, Skyview Room</span><span class="event-chip">Indian Traditional Attire</span></div>
+
+        <!-- Open state -->
+        <div id="open-state">
+          <p class="step-sub" style="margin-bottom:1.25rem;">You can search by first name, last name, or both.</p>
+          <div class="name-row">
+            <input type="text" id="inp-first" placeholder="First Name (optional)" autocomplete="given-name"/>
+            <input type="text" id="inp-last"  placeholder="Last Name (optional)"  autocomplete="family-name"/>
           </div>
-        </div>
-        <div class="event-card">
-          <img id="img-sangeet" class="event-img" src="" alt="Sangeet Night" style="object-position:center 30%"/>
-          <div class="event-body">
-            <span class="event-badge">August 21 — Evening</span>
-            <div class="event-name">Sangeet Night</div>
-            <div class="event-time">During Mehndi</div>
-            <p class="event-desc">A lively pre-wedding celebration centred around music, dance, and performances by family and friends. Stay tuned for a special performance! Dinner will be served.</p>
-            <div class="event-chips"><span class="event-chip">Ascott Parc, Skyview Room</span><span class="event-chip">Indian Traditional Attire</span></div>
-          </div>
+          <button class="search-btn" id="search-btn" onclick="searchGuest(event)">Find My Invitation</button>
+          <div class="search-error" id="search-error"></div>
+          <span class="deadline-note">Please RSVP by April 15, 2026</span>
         </div>
       </div>
+    </div>
 
-      <!-- Aug 22: Baraat + Lagan + Reception all 3 side by side -->
-      <div class="day-sep"><div class="day-sep-line"></div><div class="day-sep-txt">August 22, 2026</div><div class="day-sep-line"></div></div>
-      <div class="events-grid">
-        <div class="event-card">
-          <img id="img-baraat" class="event-img" src="" alt="Baraat"/>
-          <div class="event-body">
-            <span class="event-badge">August 22 — Morning</span>
-            <div class="event-name">Baraat (Wedding Procession)</div>
-            <div class="event-time">9:30 am</div>
-            <p class="event-desc">Baraat is the groom&rsquo;s wedding procession to the ceremony venue, accompanied by music and dancing. The procession will start at the Ascott Parc Main Entrance. Breakfast will be served.</p>
-            <div class="event-chips"><span class="event-chip">Ascott Parc, Main Entrance</span><span class="event-chip">Indian Traditional Attire</span></div>
-          </div>
+    <!-- ── STEP 1b: VERIFY IDENTITY ──────────────────────── -->
+    <div class="rsvp-step" id="step-verify">
+      <div class="rsvp-card">
+        <span class="step-eye">Confirm Your Invitation</span>
+        <div class="step-head">Is this your family?</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">We found the following family members on the guest list. You will be able to RSVP on behalf of your whole family — please confirm this is the right group.</p>
+        <div id="verify-names"></div>
+        <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
+          <button class="search-btn" onclick="confirmIdentity(true)">Yes, this is my family</button>
+          <button class="search-btn" onclick="confirmIdentity(false)" style="border-color:var(--text-light);color:var(--text-light);">No, this isn&rsquo;t me</button>
         </div>
-        <div class="event-card">
-          <img id="img-lagan" class="event-img" src="" alt="Lagan Ceremony"/>
-          <div class="event-body">
-            <span class="event-badge">August 22 — Afternoon </span>
-            <div class="event-name">Lagan (Wedding Ceremony)</div>
-            <div class="event-time">10:00 am – 2:00 pm</div>
-            <p class="event-desc">The sacred Hindu wedding ceremony where the bride and groom are married through traditional rituals around the holy fire, formally uniting them in marriage. Lunch will be served.</p>
-            <div class="event-chips"><span class="event-chip">Ascott Parc, Gazebo Area</span><span class="event-chip">Indian Traditional Attire</span></div>
-          </div>
-        </div>
-        <div class="event-card">
-          <img id="img-reception" class="event-img" src="" alt="Cocktail & Reception"/>
-          <div class="event-body">
-            <span class="event-badge">August 22 — Evening</span>
-            <div class="event-name">Cocktail &amp; Reception</div>
-            <div class="event-time">6:00 pm – 1:00 am</div>
-            <p class="event-desc">An evening celebration to toast the newlyweds — cocktails, dinner, dancing, and a night to remember! Get ready to wear your best dance shoes. Dinner will be served.</p>
-            <div class="event-chips"><span class="event-chip">Ascott Parc, Imperial Room</span><span class="event-chip">Indian traditional · Western Formal · Black Tie</span></div>
-          </div>
+        <div style="text-align:center;margin-top:1.5rem;">
+          <span class="back-link" onclick="showStep('step-search')">&#8592; Search again</span>
         </div>
       </div>
+    </div>
 
-      <!-- India Reception -->
-      <div class="day-sep"><div class="day-sep-line"></div><div class="day-sep-txt">October 24, 2026 · Delhi, India</div><div class="day-sep-line"></div></div>
-      <div class="events-grid events-grid--one">
-        <div class="event-card">
-          <img id="img-india" class="event-img" src="" alt="India Reception" style="object-position:center 65%"/>
-          <div class="event-body">
-            <span class="event-badge">October 24</span>
-            <div class="event-name">India Reception</div>
-            <div class="event-time">5:00 pm – 10:00 pm</div>
-            <p class="event-desc">For our family and friends who may not be able to join us in Canada, we would love to celebrate with you in Delhi! Join us for an evening to toast and celebrate the newly weds. Dinner will be served.</p>
-            <div class="event-chips"><span class="event-chip">Noida Golf Course, Delhi NCR</span><span class="event-chip">Indian Traditional · Western Formal · Black Tie</span></div>
-          </div>
+    <!-- ── STEP 1c: MULTIPLE MATCHES ──────────────────────── -->
+    <div class="rsvp-step" id="step-select">
+      <div class="rsvp-card">
+        <span class="step-eye">Select Your Name</span>
+        <div class="step-head">We found a few matches</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">Please select your name from the list below.</p>
+        <div id="matches-container"></div>
+        <div style="text-align:center;margin-top:1.5rem;">
+          <span class="back-link" onclick="showStep('step-search')">&#8592; Search again</span>
         </div>
       </div>
-
-    </div>
-  </section>
-
-  <!-- TRAVEL -->
-  <section id="travel">
-    <div class="travel-header">
-      <span class="sec-eye">Getting Here</span>
-      <div class="sec-head">Travel &amp; Stay</div>
-      <div class="sec-rule"></div>
     </div>
 
-    <div class="travel-mosaic">
+    <!-- ── STEP 2: RSVP FORM ──────────────────────────────── -->
+    <div class="rsvp-step" id="step-form">
+      <div class="rsvp-card">
+        <div class="step-head" id="form-welcome">Welcome!</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">Please RSVP for each member of your party.</p>
+        <div class="email-row">
+          <label class="member-name-label" for="inp-email">Your Email Address (optional)</label>
+          <input type="email" id="inp-email" class="email-input" placeholder="email@example.com" autocomplete="email"/>
+        </div>
+        <div class="gold-rule"></div>
 
-      <!-- Tall photo panel -->
-      <div class="tm-photo" id="img-travel"></div>
+        <!-- Member cards injected here -->
+        <div id="members-container"></div>
 
-      <!-- Where to Stay — spans 2 cols -->
-      <div class="tm-panel tm-hotel">
-        <span class="tm-label">Where to Stay</span>
-        <h3 class="tm-title">Aloft Hotel</h3>
-        <div class="tm-divider"></div>
-        <p>The wedding party will be staying at the <strong>Aloft Hotel</strong> for ease of access to the venue. We have arranged a special discount code — be sure to enter it to lock in rates as soon as possible!</p>
-        <div class="tm-code">Discount Code: W14</div>
-        <p class="tm-warning">&#9888;&#65039; BTS is having a concert the same weekend, so accommodation is quite limited. Book early! You can also <a href="https://www.google.com/maps/search/hotels+near+Ascott+Parc+Vaughan" target="_blank" class="tm-hotel-link">browse other hotels</a> in the area.</p>
-        <a href="https://www.marriott.com/en-us/hotels/yyzav-aloft-vaughan-mills/overview/" target="_blank" class="tm-book-link">Book at Aloft Vaughan Mills &#8594;</a>
-      </div>
+        <!-- Additional guests injected here -->
+        <div id="addl-container"></div>
 
-      <!-- Flying In -->
-      <div class="tm-panel tm-info tm-flying">
-        <div class="tm-num">01</div>
-        <h4>Flying In</h4>
-        <p>We recommend flying into <strong>Toronto Pearson International Airport (YYZ)</strong> — the closest major airport. <strong>Billy Bishop (YTZ)</strong> is also convenient for nearby cities.</p>
-      </div>
-
-      <!-- The Venue -->
-      <div class="tm-panel tm-info tm-venue">
-        <div class="tm-num">02</div>
-        <h4>The Venue</h4>
-        <p style="margin-bottom:0.75rem;">All events take place at:</p>
-        <address class="tm-address">
-          Ascott Parc Event Centre<br/>
-          2839 Rutherford Rd<br/>
-          Vaughan, ON &nbsp;L4K 2N7
-        </address>
-        <div class="tm-phone">(905) 417-8400</div>
-      </div>
-
-      <!-- Bridge photo -->
-      <div class="tm-bridge"></div>
-
-      <!-- Getting Around -->
-      <div class="tm-panel tm-info tm-around">
-        <div class="tm-num">03</div>
-        <h4>Getting Around</h4>
-        <p>From Pearson Airport, it&rsquo;s about <strong>20&ndash;30 minutes</strong> by car to Ascott Parc. Transport options include Uber / Lyft (easiest), public transit, or rental car.</p>
-      </div>
-
-      <!-- Things to Do -->
-      <div class="tm-panel tm-info tm-todo">
-        <div class="tm-num">04</div>
-        <h4>Things to Do</h4>
-        <ul class="tm-list">
-          <li><strong>Vaughan Mills</strong> &mdash; Toronto&rsquo;s largest mall</li>
-          <li><strong>Yorkdale Mall</strong> &mdash; Premium shopping</li>
-          <li><strong>Downtown Toronto</strong> &mdash; CN Tower &amp; more</li>
-          <li><strong>Niagara Falls</strong>&mdash; Seven wonders of the world!</li>
-        </ul>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- RSVP -->
-  <section id="rsvp">
-    <span class="sec-eye">We&rsquo;d Love to See You</span>
-    <div class="sec-head">RSVP</div>
-    <div class="sec-rule"></div>
-    <p>Please let us know if you&rsquo;ll be joining our celebration. We can&rsquo;t wait to share these moments with you.</p>
-    <a href="rsvp.html" class="rsvp-btn">RSVP Now</a>
-    <div class="rsvp-note">Please RSVP by April 15, 2026</div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq">
-    <div class="faq-wrap">
-      <span class="sec-eye">Questions &amp; Answers</span>
-      <div class="sec-head">FAQ</div>
-      <div class="sec-rule"></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">When is the RSVP deadline? <span class="faq-plus">+</span></div><div class="faq-a"><span>Please RSVP by <strong>April 15th</strong> so we can have an accurate headcount. &#128578;</span></div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What will the weather be like? <span class="faq-plus">+</span></div><div class="faq-a"><span>August in Vaughan is warm and summery — 22–28°C (72–82°F). Evening events are indoors; morning events are outdoors, so pack light layers and breathable fabrics.</span></div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What should I wear? <span class="faq-plus">+</span></div><div class="faq-a"><span><strong>Indian events</strong> (Haldi, Mehndi, Sangeet): Colourful and festive — sarees, lehengas, sherwanis, kurtas!<br/><br/><strong>Reception (August 22 evening):</strong> Black Tie Formal — gowns, tuxes, formal suits.</span></div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Is the wedding indoors or outdoors? <span class="faq-plus">+</span></div><div class="faq-a"><span>Haldi and Lagan are outdoors. Sangeet and Reception are indoors.</span></div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Where should I park? <span class="faq-plus">+</span></div><div class="faq-a"><span>There is plenty of <strong>free parking</strong> at the venue.</span></div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Is transportation provided between the reception and hotels? <span class="faq-plus">+</span></div><div class="faq-a"><span>Uber, Lyft, and taxis are easily available in Vaughan and the GTA.</span></div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What can I do between the ceremony and reception? <span class="faq-plus">+</span></div><div class="faq-a"><span>Return to your hotel to rest and change, or stay at the venue to relax and socialize.</span></div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Where should I stay? <span class="faq-plus">+</span></div><div class="faq-a"><span>We recommend the <strong>Aloft Hotel</strong> — closest to the venue. Use discount code <strong>W14</strong>. See the Travel section for more details.</span></div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Who should I contact with questions? <span class="faq-plus">+</span></div><div class="faq-a"><span>Email us at <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:var(--crimson)">shivani.akshaypathak@hotmail.com</a> — we&rsquo;d love to hear from you!</span></div></div>
-    </div>
-  </section>
-
-  <!-- MESSAGES -->
-  <section id="messages">
-    <div class="sec-wrap" style="text-align:center;padding:6rem 2rem 3rem;">
-      <span class="sec-eye">Kind Words</span>
-      <div class="sec-head">Messages for the Couple</div>
-      <div class="sec-rule" style="margin:0 auto 2.5rem;"></div>
-    </div>
-
-    <!-- Slideshow (populated by JS) -->
-    <div class="msg-carousel-wrap" id="msg-carousel-wrap">
-      <div class="msg-carousel" id="msg-carousel"></div>
-      <div class="msg-dots"     id="msg-dots"></div>
-    </div>
-
-    <!-- Leave a message form -->
-    <div class="msg-form-wrap">
-      <div class="msg-form-card">
-        <span class="sec-eye" style="display:block;margin-bottom:0.5rem;">Leave a Note</span>
-        <p class="msg-form-intro">Share your wishes, advice, or a favourite memory with Shivani &amp; Akshay.</p>
-        <input  type="text"     id="msg-form-name" class="msg-input" placeholder="Your name (or leave blank to be anonymous)"/>
-        <textarea               id="msg-form-text" class="msg-input msg-textarea" rows="4" placeholder="Write your message here&#8230;"></textarea>
-        <button class="msg-submit-btn" id="msg-submit-btn" onclick="submitIndexMessage()">Send Message</button>
-        <div class="msg-form-status" id="msg-form-status"></div>
+        <button class="submit-btn" id="submit-btn" onclick="collectAndSubmit()">Submit RSVP</button>
+        <div style="text-align:center">
+          <span class="back-link" onclick="showStep('step-search')">&#8592; Search again</span>
+        </div>
       </div>
     </div>
-  </section>
+
+    <!-- ── STEP 2b: LEAVE A MESSAGE (shown if all declined) ── -->
+    <div class="rsvp-step" id="step-message">
+      <div class="rsvp-card">
+        <span class="step-eye">A Note for the Couple</span>
+        <div class="step-head">Leave a Message</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">We&rsquo;re so sorry you can&rsquo;t join us. We&rsquo;d love to hear from you — leave Shivani &amp; Akshay a message, some advice, or your well wishes.</p>
+        <div style="margin-bottom:1rem;">
+          <label class="member-name-label" for="rsvp-msg-name">Your Name</label>
+          <input type="text" id="rsvp-msg-name" class="email-input" placeholder="Pre-filled from your RSVP, or edit freely"/>
+        </div>
+        <div style="margin-bottom:1.5rem;">
+          <label class="member-name-label" for="rsvp-msg-text">Your Message</label>
+          <textarea id="rsvp-msg-text" class="email-input" rows="5" style="resize:vertical;" placeholder="Share your wishes, a favourite memory, or some advice for the couple&#8230;"></textarea>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <button class="search-btn" id="rsvp-msg-btn" onclick="submitRsvpMessage()">Send Message</button>
+          <button class="search-btn" onclick="showStep('step-confirm')" style="border-color:var(--text-light);color:var(--text-light);">Skip</button>
+        </div>
+        <div class="search-error" id="rsvp-msg-error" style="margin-top:1rem;"></div>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: CONFIRMATION ───────────────────────────── -->
+    <div class="rsvp-step" id="step-confirm">
+      <div class="rsvp-card confirm-card">
+        <div class="confirm-title">Thank You!</div>
+        <div class="gold-rule" style="max-width:120px;margin:0 auto 1.5rem;"></div>
+        <p class="confirm-msg">Your RSVP has been received. We can&rsquo;t wait to celebrate with you!</p>
+        <span class="confirm-ornament">&#10022; &nbsp; &#10022; &nbsp; &#10022;</span>
+        <p class="confirm-contact">Questions? <a href="mailto:shivani.akshaypathak@hotmail.com">shivani.akshaypathak@hotmail.com</a></p>
+        <a href="index.html" class="home-btn">Back to Main Site</a>
+      </div>
+    </div>
+
+  </div><!-- /.rsvp-main -->
 
   <!-- FOOTER -->
-  <footer>
+  <footer class="rsvp-footer">
     <div class="f-names">Shivani &amp; Akshay</div>
-    <div class="f-date">August 21 – 22, 2026 · Vaughan, Ontario</div>
-    <div class="f-rule"></div>
-    <div class="f-contact">Questions? <a href="mailto:shivani.akshaypathak@hotmail.com">shivani.akshaypathak@hotmail.com</a></div>
-    <div class="f-made">created with &#9829; by Shivani</div>
+    <div class="f-date">August 21 &ndash; 22, 2026 &middot; Vaughan, Ontario</div>
   </footer>
 
-</div>
-  <script src="script.js?v=2"></script>
+<script>
+// ============================================================
+//  RSVP Page JavaScript
+// ============================================================
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWGnHQ9fE8tRoLolgLiuykcAC9IholKxzBrjJUidkUtIgFTYImMBKKMHqArN01oHk/exec';
+
+// RSVP deadline check
+const RSVP_DEADLINE = new Date('2026-04-15T23:59:59');
+
+// Event metadata: tag → { name, date }
+const EVENT_META = {
+  haldi:           { name: 'Haldi & Devgon',          date: 'August 21' },
+  sangeet:         { name: 'Mehndi & Sangeet Night',  date: 'August 21, Evening' },
+  lagan:           { name: 'Baraat & Lagan Ceremony', date: 'August 22' },
+  canadaReception: { name: 'Cocktail & Reception',    date: 'August 22, Evening' },
+  indiaReception:  { name: 'India Reception',         date: 'October 24, Delhi' },
+};
+
+// Store fetched group data for submission
+let _groupData = null;
+// Cache group data fetched during match preview so selectMatch never re-fetches
+let _groupCache = {};
+// Name to show in the welcome heading (what the user searched)
+let _pendingWelcomeName = '';
+
+// ── showAlreadyRsvped ─────────────────────────────────────────
+function showAlreadyRsvped() {
+  showStep('step-search');
+  var prior = document.getElementById('already-notice-el');
+  if (prior) prior.remove();
+  var notice = document.createElement('div');
+  notice.className = 'already-notice';
+  notice.id = 'already-notice-el';
+  notice.innerHTML = '<p>It looks like your group has already RSVP\u2019d \u2014 thank you! If you need to make any changes to your response, please email us at <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:var(--crimson)">shivani.akshaypathak@hotmail.com</a> and we\u2019ll sort it out.</p>';
+  document.getElementById('open-state').appendChild(notice);
+}
+
+// ── buildEventRow ─────────────────────────────────────────────
+function buildEventRow(tag, idx, type) {
+  var meta = EVENT_META[tag];
+  if (!meta) return null;
+  var row = document.createElement('div');
+  row.className = 'event-row';
+  var labelWrap = document.createElement('div');
+  labelWrap.className = 'event-label-wrap';
+  var labelName = document.createElement('div');
+  labelName.className = 'event-label-name';
+  labelName.textContent = meta.name;
+  var labelDate = document.createElement('div');
+  labelDate.className = 'event-label-date';
+  labelDate.textContent = meta.date;
+  labelWrap.appendChild(labelName);
+  labelWrap.appendChild(labelDate);
+  var toggleGroup = document.createElement('div');
+  toggleGroup.className = 'toggle-group';
+  toggleGroup.dataset.tag = tag;
+  toggleGroup.dataset.type = type;
+  if (type === 'member') { toggleGroup.dataset.memberIdx = idx; }
+  else                   { toggleGroup.dataset.guestIdx  = idx; }
+  toggleGroup.appendChild(createToggleBtn('Yes', true));
+  toggleGroup.appendChild(createToggleBtn('No',  false));
+  row.appendChild(labelWrap);
+  row.appendChild(toggleGroup);
+  return row;
+}
+
+// ── collectRsvp ───────────────────────────────────────────────
+function collectRsvp(type, idx) {
+  var attr = type === 'member' ? 'data-member-idx' : 'data-guest-idx';
+  var rsvp = {};
+  document.querySelectorAll('.toggle-group[data-type="' + type + '"][' + attr + '="' + idx + '"]').forEach(function(group) {
+    var active = group.querySelector('.toggle-btn.active, .toggle-btn.active-no');
+    rsvp[group.dataset.tag] = active ? active.dataset.value : 'Yes';
+  });
+  return rsvp;
+}
+
+// ── On page load: check deadline ────────────────────────────
+(function checkDeadline() {
+  const now = new Date();
+  if (now > RSVP_DEADLINE) {
+    document.getElementById('open-state').style.display   = 'none';
+    document.getElementById('closed-state').style.display = 'block';
+  }
+})();
+
+// ── showStep ─────────────────────────────────────────────────
+function showStep(id) {
+  var current = document.querySelector('.rsvp-step.active');
+  var next    = document.getElementById(id);
+  if (!next || current === next) return;
+
+  if (current) {
+    current.classList.add('leaving');
+    setTimeout(function() {
+      current.classList.remove('active', 'leaving');
+      next.classList.add('active');
+    }, 220);
+  } else {
+    next.classList.add('active');
+  }
+}
+
+// ── searchGuest ──────────────────────────────────────────────
+function searchGuest(e) {
+  if (e) e.preventDefault();
+
+  const firstName = (document.getElementById('inp-first').value || '').trim();
+  const lastName  = (document.getElementById('inp-last').value  || '').trim();
+  const errorEl   = document.getElementById('search-error');
+  const btn       = document.getElementById('search-btn');
+
+  errorEl.textContent = '';
+
+  if (!firstName && !lastName) {
+    errorEl.textContent = 'Please enter at least your first or last name.';
+    return;
+  }
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const url = APPS_SCRIPT_URL
+    + '?action=lookup'
+    + '&first=' + encodeURIComponent(firstName)
+    + '&last='  + encodeURIComponent(lastName);
+
+  fetch(url, { credentials: 'omit' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+
+      if (data.error) {
+        errorEl.textContent = 'Something went wrong. Please try again.';
+        return;
+      }
+
+      if (!data.found) {
+        errorEl.textContent = 'We couldn\u2019t find your name on the guest list. Please double-check the spelling and try again.';
+        return;
+      }
+
+      if (data.multipleMatches) {
+        buildMatchSelection(data.matches);
+        showStep('step-select');
+        return;
+      }
+
+      if (data.alreadyRsvped) {
+        errorEl.innerHTML = '';
+        showAlreadyRsvped();
+        return;
+      }
+
+      // Remove any prior "already RSVP'd" notice if they searched again
+      var prior = document.getElementById('already-notice-el');
+      if (prior) prior.remove();
+
+      // Store data and show "Is this you?" confirmation before the form
+      _groupData = data;
+      // Find the member whose name best matches the search inputs so we always
+      // show the full name (first + last) regardless of what the user typed.
+      var searchTerm = (firstName + ' ' + lastName).trim().toLowerCase();
+      var matched = data.members.find(function(m) {
+        var full = (m.firstName + ' ' + m.lastName).trim().toLowerCase();
+        return full === searchTerm
+          || m.firstName.toLowerCase() === searchTerm
+          || m.lastName.toLowerCase() === searchTerm;
+      }) || data.members[0];
+      _pendingWelcomeName = (matched.firstName + ' ' + matched.lastName).trim();
+      showVerifyStep(data);
+    })
+    .catch(function() {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      errorEl.textContent = 'Network error. Please check your connection and try again.';
+    });
+}
+
+// Allow pressing Enter in the name inputs to trigger search
+document.getElementById('inp-first').addEventListener('keydown', function(e) { if (e.key === 'Enter') searchGuest(e); });
+document.getElementById('inp-last').addEventListener('keydown',  function(e) { if (e.key === 'Enter') searchGuest(e); });
+
+// ── showVerifyStep ───────────────────────────────────────────
+function showVerifyStep(data) {
+  var container = document.getElementById('verify-names');
+  container.innerHTML = '';
+  data.members.forEach(function(m) {
+    var el = document.createElement('div');
+    el.className = 'verify-name-item';
+    el.textContent = m.firstName + ' ' + m.lastName;
+    container.appendChild(el);
+  });
+  showStep('step-verify');
+}
+
+// ── confirmIdentity ──────────────────────────────────────────
+function confirmIdentity(yes) {
+  if (yes) {
+    buildForm(_pendingWelcomeName, _groupData);
+    showStep('step-form');
+  } else {
+    showStep('step-search');
+    var errorEl = document.getElementById('search-error');
+    errorEl.textContent = 'No problem — please try searching with a different name or spelling.';
+  }
+}
+
+// ── buildMatchSelection ──────────────────────────────────────
+function buildMatchSelection(matches) {
+  var container = document.getElementById('matches-container');
+  container.innerHTML = '';
+  matches.forEach(function(match) {
+    var btn = document.createElement('button');
+    btn.className = 'match-btn';
+    btn.style.animationDelay = (matches.indexOf(match) * 80) + 'ms';
+
+    var nameDiv = document.createElement('div');
+    nameDiv.style.fontWeight = '600';
+    nameDiv.textContent = match.name;
+
+    var familyDiv = document.createElement('div');
+    familyDiv.style.fontSize = '0.88rem';
+    familyDiv.style.color = 'var(--text-mid)';
+    familyDiv.style.marginTop = '0.3rem';
+    familyDiv.style.fontStyle = 'italic';
+    familyDiv.textContent = 'Loading group\u2026';
+
+    btn.appendChild(nameDiv);
+    btn.appendChild(familyDiv);
+    btn.onclick = function() { selectMatch(match.groupId, match.name); };
+    container.appendChild(btn);
+
+    // Fetch this group's members so the user can tell which entry is theirs.
+    // Cache the result so selectMatch never needs to re-fetch the same group.
+    fetch(APPS_SCRIPT_URL + '?action=getGroup&groupId=' + encodeURIComponent(match.groupId), { credentials: 'omit' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        _groupCache[match.groupId] = data;
+        if (data.members && data.members.length > 0) {
+          var names = data.members.map(function(m) { return m.firstName + ' ' + m.lastName; });
+          familyDiv.textContent = 'Party: ' + names.join(', ');
+        } else {
+          familyDiv.textContent = '';
+        }
+      })
+      .catch(function() { familyDiv.textContent = ''; });
+  });
+}
+
+// ── selectMatch ──────────────────────────────────────────────
+function selectMatch(groupId, clickedName) {
+  function handleGroup(data) {
+    if (data.alreadyRsvped) { showAlreadyRsvped(); return; }
+    _groupData = data;
+    _pendingWelcomeName = clickedName || (data.members[0].firstName + ' ' + data.members[0].lastName).trim();
+    buildForm(_pendingWelcomeName, data);
+    showStep('step-form');
+  }
+
+  fetch(APPS_SCRIPT_URL + '?action=getGroup&groupId=' + encodeURIComponent(groupId), { credentials: 'omit' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      _groupCache[groupId] = data;
+      handleGroup(data);
+    })
+    .catch(function() { alert('Network error. Please try again.'); });
+}
+
+// ── buildForm ────────────────────────────────────────────────
+function buildForm(firstName, data) {
+  // Update welcome heading
+  document.getElementById('form-welcome').textContent = 'Welcome, ' + firstName + '!';
+
+  // Build member cards
+  var membersContainer = document.getElementById('members-container');
+  membersContainer.innerHTML = '';
+
+  data.members.forEach(function(member, idx) {
+    var card = document.createElement('div');
+    card.className = 'member-card';
+    card.style.animationDelay = (idx * 90) + 'ms';
+
+    var nameLabel = document.createElement('span');
+    nameLabel.className = 'member-name-label';
+    nameLabel.textContent = 'Name (edit if misspelled)';
+    card.appendChild(nameLabel);
+
+    var nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.className = 'member-name-input';
+    nameInput.value = member.firstName + ' ' + member.lastName;
+    nameInput.dataset.memberIdx = idx;
+    card.appendChild(nameInput);
+
+    // One event row per invited event
+    member.events.forEach(function(tag) {
+      var row = buildEventRow(tag, idx, 'member');
+      if (row) card.appendChild(row);
+    });
+
+    membersContainer.appendChild(card);
+  });
+
+  // Build additional guests section
+  var addlContainer = document.getElementById('addl-container');
+  addlContainer.innerHTML = '';
+
+  var allowed = data.additionalGuestsAllowed || 0;
+  if (allowed > 0) {
+    // Determine which events the group can attend (union of all member events)
+    var groupEvents = [];
+    data.members.forEach(function(m) {
+      m.events.forEach(function(tag) {
+        if (groupEvents.indexOf(tag) === -1) groupEvents.push(tag);
+      });
+    });
+
+    var section = document.createElement('div');
+    section.className = 'addl-section';
+
+    var addlHead = document.createElement('div');
+    addlHead.className = 'addl-head';
+    addlHead.textContent = 'Additional Guests';
+
+    var addlNote = document.createElement('p');
+    addlNote.className = 'addl-note';
+    addlNote.textContent = 'You may bring up to ' + allowed + ' additional guest' + (allowed === 1 ? '' : 's') + '.';
+
+    section.appendChild(addlHead);
+    section.appendChild(addlNote);
+
+    for (var g = 0; g < allowed; g++) {
+      var gCard = document.createElement('div');
+      gCard.className = 'addl-guest-card';
+
+      var gNum = document.createElement('div');
+      gNum.className = 'addl-guest-num';
+      gNum.textContent = 'Guest ' + (g + 1);
+
+      var gInput = document.createElement('input');
+      gInput.type = 'text';
+      gInput.className = 'addl-name-input';
+      gInput.placeholder = 'Guest Name (optional)';
+      gInput.dataset.guestIdx = g;
+
+      gCard.appendChild(gNum);
+      gCard.appendChild(gInput);
+
+      // Event rows for additional guests (same events as group)
+      groupEvents.forEach(function(tag) {
+        var row = buildEventRow(tag, g, 'guest');
+        if (row) gCard.appendChild(row);
+      });
+
+      section.appendChild(gCard);
+    }
+
+    addlContainer.appendChild(section);
+  }
+}
+
+// ── createToggleBtn ──────────────────────────────────────────
+function createToggleBtn(label, isYes) {
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.textContent = label;
+  btn.className = 'toggle-btn' + (isYes ? ' active' : ''); // YES starts active
+  btn.dataset.value = label;
+  btn.addEventListener('click', function() { selectToggle(btn); });
+  return btn;
+}
+
+// ── selectToggle ─────────────────────────────────────────────
+function selectToggle(btn) {
+  var group = btn.closest('.toggle-group');
+  var btns  = group.querySelectorAll('.toggle-btn');
+
+  btns.forEach(function(b) {
+    b.classList.remove('active', 'active-no');
+  });
+
+  btn.classList.add(btn.dataset.value === 'Yes' ? 'active' : 'active-no');
+}
+
+// ── collectAndSubmit ─────────────────────────────────────────
+function collectAndSubmit() {
+  if (!_groupData) return;
+
+  var submitBtn = document.getElementById('submit-btn');
+  submitBtn.textContent = 'Submitting\u2026';
+  submitBtn.disabled = true;
+
+  // Collect member RSVPs
+  var membersOut = _groupData.members.map(function(member, idx) {
+    var rsvp = collectRsvp('member', idx);
+    var nameInput = document.querySelector('.member-name-input[data-member-idx="' + idx + '"]');
+    var displayName = nameInput ? nameInput.value.trim() : (member.firstName + ' ' + member.lastName);
+    return {
+      firstName:   member.firstName,
+      lastName:    member.lastName,
+      fullName:    member.fullName,
+      displayName: displayName,
+      rsvp:        rsvp,
+    };
+  });
+
+  // Collect the name of the person who submitted (first listed member)
+  var submittedBy = (_groupData.members[0].firstName + ' ' + _groupData.members[0].lastName).trim();
+
+  // Collect additional guests
+  var additionalOut = [];
+  var allowed = _groupData.additionalGuestsAllowed || 0;
+  for (var g = 0; g < allowed; g++) {
+    var nameInput = document.querySelector('.addl-name-input[data-guest-idx="' + g + '"]');
+    var guestName = nameInput ? nameInput.value.trim() : '';
+
+    additionalOut.push({ name: guestName, rsvp: collectRsvp('guest', g) });
+  }
+
+  var emailInput = document.getElementById('inp-email');
+  var email = emailInput ? emailInput.value.trim() : '';
+
+  var payload = {
+    groupId:          _groupData.groupId,
+    submittedBy:      submittedBy,
+    email:            email,
+    members:          membersOut,
+    additionalGuests: additionalOut,
+  };
+
+  var url = APPS_SCRIPT_URL + '?action=submit&data=' + encodeURIComponent(JSON.stringify(payload));
+
+  fetch(url, { credentials: 'omit' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        if (checkAllDeclined()) {
+          // Pre-fill name from submitted RSVP
+          var prefill = _groupData && _groupData.members.length
+            ? (_groupData.members[0].firstName + ' ' + _groupData.members[0].lastName).trim()
+            : '';
+          document.getElementById('rsvp-msg-name').value = prefill;
+          showStep('step-message');
+        } else {
+          showStep('step-confirm');
+        }
+      } else {
+        submitBtn.textContent = 'Submit RSVP';
+        submitBtn.disabled    = false;
+        alert('There was an error submitting your RSVP: ' + (data.error || 'Unknown error') + '. Please try again or contact us.');
+      }
+    })
+    .catch(function() {
+      submitBtn.textContent = 'Submit RSVP';
+      submitBtn.disabled    = false;
+      alert('Network error. Please check your connection and try again.');
+    });
+}
+
+// ── checkAllDeclined ─────────────────────────────────────────
+function checkAllDeclined() {
+  var groups = document.querySelectorAll('.toggle-group[data-type="member"]');
+  if (!groups.length) return false;
+  for (var i = 0; i < groups.length; i++) {
+    var active = groups[i].querySelector('.toggle-btn.active, .toggle-btn.active-no');
+    if (!active || active.dataset.value === 'Yes') return false;
+  }
+  return true;
+}
+
+// ── submitRsvpMessage ────────────────────────────────────────
+function submitRsvpMessage() {
+  var name    = (document.getElementById('rsvp-msg-name').value || '').trim();
+  var text    = (document.getElementById('rsvp-msg-text').value || '').trim();
+  var errorEl = document.getElementById('rsvp-msg-error');
+  var btn     = document.getElementById('rsvp-msg-btn');
+
+  if (!text) { errorEl.textContent = 'Please write a message before sending.'; return; }
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+  errorEl.textContent = '';
+
+  var payload = { name: name || 'Anonymous', message: text };
+  fetch(APPS_SCRIPT_URL + '?action=submitMessage&data=' + encodeURIComponent(JSON.stringify(payload)), { credentials: 'omit' })
+    .then(function(r) { return r.json(); })
+    .then(function() { showStep('step-confirm'); })
+    .catch(function() {
+      // Still proceed to confirm even if message send fails
+      showStep('step-confirm');
+    });
+}
+
+// Fade in on load
+window.addEventListener('DOMContentLoaded', function() {
+  var veil = document.getElementById('page-veil');
+  requestAnimationFrame(function() { veil.style.opacity = '0'; });
+});
+</script>
+
 </body>
 </html>
