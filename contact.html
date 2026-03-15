@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Shivani &amp; Akshay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --crimson: #8B1A2B; --crimson-dark: #5c0e1a;
+      --gold: #c9a84c; --gold-light: #e4c97e;
+      --cream: #fdf6ee; --warm-white: #fffaf5;
+      --charcoal: #2a2020; --text-mid: #5a4a42; --text-light: #9a8070;
+      --border: rgba(139,26,43,0.13);
+    }
+    body { font-family: "Raleway", sans-serif; font-weight: 300; background: var(--warm-white); color: var(--charcoal); overflow-x: hidden; min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(255,250,245,0.94); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: padding 0.3s; }
+    .nav-logo { font-family: "Great Vibes", cursive; font-size: 1.2rem; color: var(--crimson); text-decoration: none; }
+    .nav-back { font-family: "Cormorant Garamond", serif; font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-mid); text-decoration: none; transition: color 0.25s; }
+    .nav-back:hover { color: var(--crimson); }
+
+    /* ── HERO ── */
+    .contact-hero {
+      min-height: 38vh;
+      background-image: url("images/rsvp-bg.png");
+      background-size: cover; background-position: center top;
+      position: relative; display: flex; align-items: center; justify-content: center; text-align: center;
+      padding: 7rem 2rem 4rem;
+    }
+    .contact-hero::before { content: ""; position: absolute; inset: 0; background: rgba(55,8,14,0.82); }
+    .contact-hero-inner { position: relative; z-index: 1; }
+    .contact-eyebrow { font-family: "Cormorant Garamond", serif; font-size: 0.72rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 0.6rem; }
+    .contact-title { font-family: "Great Vibes", cursive; font-size: clamp(2.8rem, 7vw, 4.5rem); color: var(--gold-light); line-height: 1.1; margin-bottom: 0.8rem; }
+    .contact-rule { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 0 auto; }
+
+    /* ── FORM CARD ── */
+    .contact-wrap { max-width: 580px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .contact-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 2.75rem 2.5rem;
+      position: relative;
+    }
+    .contact-card::before {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--crimson), var(--gold));
+    }
+    .contact-intro {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.08rem;
+      color: var(--text-mid);
+      line-height: 1.85;
+      margin-bottom: 2rem;
+    }
+    .contact-label {
+      display: block;
+      font-family: "Raleway", sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.4rem;
+    }
+    .contact-input {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      padding: 0.85rem 1rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+      outline: none;
+      margin-bottom: 1.25rem;
+      transition: border-color 0.25s;
+    }
+    .contact-input::placeholder { color: var(--text-light); font-style: italic; }
+    .contact-input:focus { border-color: var(--crimson); }
+    .contact-btn {
+      background: transparent;
+      border: 1px solid var(--crimson);
+      color: var(--crimson);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 0.95rem 2.8rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      margin-top: 0.5rem;
+    }
+    .contact-btn:hover:not(:disabled) { background: var(--crimson); color: #fff; }
+    .contact-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .contact-status {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1rem;
+      margin-top: 1rem;
+      min-height: 1.2em;
+      color: var(--text-mid);
+    }
+
+    @media(max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .contact-wrap { padding: 3rem 1.25rem 5rem; }
+      .contact-card { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="page-veil" style="position:fixed;inset:0;z-index:99998;background:#fffaf5;opacity:1;transition:opacity 0.45s ease;pointer-events:none;"></div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Shivani &amp; Akshay</a>
+    <a href="index.html" class="nav-back">&#8592; Back to Main Site</a>
+  </nav>
+
+  <div class="contact-hero">
+    <div class="contact-hero-inner">
+      <span class="contact-eyebrow">Get in Touch</span>
+      <div class="contact-title">Contact Us</div>
+      <div class="contact-rule"></div>
+    </div>
+  </div>
+
+  <div class="contact-wrap">
+    <div class="contact-card">
+      <p class="contact-intro">Share your contact details so we can stay in touch. We&rsquo;ll make sure we have the right information for you.</p>
+
+      <label class="contact-label" for="c-name">Full Name</label>
+      <input class="contact-input" id="c-name" type="text" placeholder="Your name"/>
+
+      <label class="contact-label" for="c-email">Email Address</label>
+      <input class="contact-input" id="c-email" type="email" placeholder="your@email.com"/>
+
+      <label class="contact-label" for="c-phone">Phone Number</label>
+      <input class="contact-input" id="c-phone" type="tel" placeholder="+1 (000) 000-0000"/>
+
+      <button class="contact-btn" id="contact-submit-btn" onclick="submitContact()">Send</button>
+      <div class="contact-status" id="contact-status"></div>
+    </div>
+  </div>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWGnHQ9fE8tRoLolgLiuykcAC9IholKxzBrjJUidkUtIgFTYImMBKKMHqArN01oHk/exec';
+
+// Fade in on load
+window.addEventListener('DOMContentLoaded', function() {
+  requestAnimationFrame(function() {
+    document.getElementById('page-veil').style.opacity = '0';
+  });
+});
+
+// Smooth scroll back to index
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('a[href="index.html"]');
+  if (!link) return;
+  e.preventDefault();
+  const veil = document.getElementById('page-veil');
+  veil.style.pointerEvents = 'auto';
+  veil.style.opacity = '1';
+  setTimeout(function() { window.location.href = 'index.html'; }, 420);
+});
+
+function submitContact() {
+  const name   = (document.getElementById('c-name').value  || '').trim();
+  const email  = (document.getElementById('c-email').value || '').trim();
+  const phone  = (document.getElementById('c-phone').value || '').trim();
+  const status = document.getElementById('contact-status');
+  const btn    = document.getElementById('contact-submit-btn');
+
+  if (!name) { status.textContent = 'Please enter your name.'; return; }
+
+  btn.disabled = true;
+  status.textContent = '';
+
+  const payload = { name, email, phone };
+  fetch(APPS_SCRIPT_URL + '?action=contact&data=' + encodeURIComponent(JSON.stringify(payload)), { credentials: 'omit' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      btn.disabled = false;
+      if (data.success) {
+        document.getElementById('c-name').value  = '';
+        document.getElementById('c-email').value = '';
+        document.getElementById('c-phone').value = '';
+        status.textContent = 'Thank you! Your details have been received \u2665';
+      } else {
+        status.textContent = 'Something went wrong. Please try again.';
+      }
+    })
+    .catch(function() {
+      btn.disabled = false;
+      status.textContent = 'Something went wrong. Please try again.';
+    });
+}
+</script>
+</body>
+</html>
