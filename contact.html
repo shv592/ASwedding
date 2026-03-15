@@ -142,6 +142,18 @@
       <label class="contact-label" for="c-phone">Phone Number</label>
       <input class="contact-input" id="c-phone" type="tel" placeholder="+1 (000) 000-0000"/>
 
+      <label class="contact-label" for="c-street">Street Address</label>
+      <input class="contact-input" id="c-street" type="text" placeholder="123 Main Street"/>
+
+      <label class="contact-label" for="c-city">City</label>
+      <input class="contact-input" id="c-city" type="text" placeholder="City"/>
+
+      <label class="contact-label" for="c-country">Country</label>
+      <input class="contact-input" id="c-country" type="text" placeholder="Country"/>
+
+      <label class="contact-label" for="c-postcode">Postcode</label>
+      <input class="contact-input" id="c-postcode" type="text" placeholder="Postcode / ZIP"/>
+
       <button class="contact-btn" id="contact-submit-btn" onclick="submitContact()">Send</button>
       <div class="contact-status" id="contact-status"></div>
     </div>
@@ -169,9 +181,13 @@ document.addEventListener('click', function(e) {
 });
 
 function submitContact() {
-  const name   = (document.getElementById('c-name').value  || '').trim();
-  const email  = (document.getElementById('c-email').value || '').trim();
-  const phone  = (document.getElementById('c-phone').value || '').trim();
+  const name     = (document.getElementById('c-name').value     || '').trim();
+  const email    = (document.getElementById('c-email').value    || '').trim();
+  const phone    = (document.getElementById('c-phone').value    || '').trim();
+  const street   = (document.getElementById('c-street').value   || '').trim();
+  const city     = (document.getElementById('c-city').value     || '').trim();
+  const country  = (document.getElementById('c-country').value  || '').trim();
+  const postcode = (document.getElementById('c-postcode').value || '').trim();
   const status = document.getElementById('contact-status');
   const btn    = document.getElementById('contact-submit-btn');
 
@@ -180,15 +196,19 @@ function submitContact() {
   btn.disabled = true;
   status.textContent = '';
 
-  const payload = { name, email, phone };
+  const payload = { name, phone, email, street, city, country, postcode };
   fetch(APPS_SCRIPT_URL + '?action=contact&data=' + encodeURIComponent(JSON.stringify(payload)), { credentials: 'omit' })
     .then(function(r) { return r.json(); })
     .then(function(data) {
       btn.disabled = false;
       if (data.success) {
-        document.getElementById('c-name').value  = '';
-        document.getElementById('c-email').value = '';
-        document.getElementById('c-phone').value = '';
+        document.getElementById('c-name').value     = '';
+        document.getElementById('c-email').value    = '';
+        document.getElementById('c-phone').value    = '';
+        document.getElementById('c-street').value   = '';
+        document.getElementById('c-city').value     = '';
+        document.getElementById('c-country').value  = '';
+        document.getElementById('c-postcode').value = '';
         status.textContent = 'Thank you! Your details have been received \u2665';
       } else {
         status.textContent = 'Something went wrong. Please try again.';
