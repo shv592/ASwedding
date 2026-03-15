@@ -285,7 +285,11 @@ function handleSubmit(params) {
 
   // Send confirmation email if an address was provided
   if (email) {
-    sendConfirmationEmail(email, submittedBy, members, additional);
+    try {
+      sendConfirmationEmail(email, submittedBy, members, additional);
+    } catch(emailErr) {
+      // Email failed but RSVP was saved — don't surface this to the user
+    }
   }
 
   return corsResponse({ success: true });
@@ -293,6 +297,8 @@ function handleSubmit(params) {
 
 // ── EMAIL CONFIRMATION ────────────────────────────────────────
 function sendConfirmationEmail(email, submittedBy, members, additional) {
+  members    = members    || [];
+  additional = additional || [];
   const EVENT_LABELS = {
     haldi:           { name: 'Haldi & Devgon',           date: 'August 21' },
     sangeet:         { name: 'Mehndi & Sangeet Night',   date: 'August 21, Evening' },
