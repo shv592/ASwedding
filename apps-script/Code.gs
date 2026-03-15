@@ -59,6 +59,33 @@ function doGet(e) {
   }
 }
 
+// ── FUZZY MATCH HELPERS ───────────────────────────────────────
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = [];
+  for (let i = 0; i <= m; i++) {
+    dp[i] = [i];
+    for (let j = 1; j <= n; j++) dp[i][j] = i === 0 ? j : 0;
+  }
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] = a[i-1] === b[j-1]
+        ? dp[i-1][j-1]
+        : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+    }
+  }
+  return dp[m][n];
+}
+
+// Allow 1 edit for short names (≤4 chars), 2 edits for longer names
+function fuzzyMatch(search, candidate) {
+  if (!search || !candidate) return false;
+  if (search === candidate) return true;
+  const maxDist = search.length <= 4 ? 1 : 2;
+  return levenshtein(search, candidate) <= maxDist;
+}
+
 // ── LOOKUP ───────────────────────────────────────────────────
 // Accepts first and/or last name — at least one required.
 // Returns a single group, or a list of name matches to pick from.
@@ -97,12 +124,13 @@ function handleLookup(params) {
     let matched = false;
 
     if (firstRaw && lastRaw) {
-      // Both fields filled — require exact first + last match
-      matched = (rowFirst === firstRaw && rowLast === lastRaw);
+      // Both fields filled — exact first name, fuzzy last name
+      matched = (rowFirst === firstRaw && fuzzyMatch(lastRaw, rowLast));
     } else {
-      // Only one field filled — check the search term against first name, last name, and full name
+      // Only one field — fuzzy match against first name, last name, or full name
       const term = firstRaw ? firstRaw : lastRaw;
-      matched = (rowFirst === term || rowLast === term || nameLower === term);
+      matched = (rowFirst === term || rowLast === term || nameLower === term ||
+                 fuzzyMatch(term, rowFirst) || fuzzyMatch(term, rowLast));
     }
 
     if (matched) matchingRows.push(r);
@@ -424,7 +452,7 @@ function sendConfirmationEmail(email, submittedBy, members, additional) {
     replyTo:  'shivani.akshaypathak@hotmail.com',
     subject:  'Your RSVP is confirmed \u2014 Shivani & Akshay, August 2026',
     htmlBody: html,
-    name:     'Shivani & Akshay Wedding',
+    name:     'Shivani and Akshay',
   });
 }
 

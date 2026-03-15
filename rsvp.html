@@ -561,6 +561,7 @@
   </style>
 </head>
 <body>
+  <div id="page-veil" style="position:fixed;inset:0;z-index:99998;background:#fffaf5;opacity:1;transition:opacity 0.45s ease;pointer-events:none;"></div>
 
   <!-- NAV -->
   <nav class="rsvp-nav">
@@ -1203,6 +1204,12 @@ function submitRsvpMessage() {
       showStep('step-confirm');
     });
 }
+
+// Fade in on load
+window.addEventListener('DOMContentLoaded', function() {
+  var veil = document.getElementById('page-veil');
+  requestAnimationFrame(function() { veil.style.opacity = '0'; });
+});
 </script>
 
 </body>

@@ -1,5 +1,16 @@
 if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
 
+// ── Page transition (fade out before navigating to rsvp.html) ─
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('a[href="rsvp.html"]');
+  if (!link) return;
+  e.preventDefault();
+  const veil = document.getElementById('page-veil');
+  veil.style.pointerEvents = 'auto';
+  veil.style.opacity = '1';
+  setTimeout(function() { window.location.href = 'rsvp.html'; }, 420);
+});
+
 const IMG_HALDI = "images/haldi.png";
 const IMG_MEHNDI = "images/mehndi.png";
 const IMG_SANGEET = "images/sangeet.png";
