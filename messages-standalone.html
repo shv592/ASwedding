@@ -16,26 +16,29 @@
       --border: rgba(139,26,43,0.13);
     }
 
+    html, body {
+      overflow: hidden;
+    }
     body {
       font-family: "Raleway", sans-serif;
       font-weight: 300;
       background: var(--cream);
       color: var(--charcoal);
-      padding: 3rem 1.5rem 4rem;
+      padding: 1rem 1.5rem 1.5rem;
     }
 
     /* ── CAROUSEL ─────────────────────────────────────────── */
     .msg-carousel-wrap {
       position: relative;
       max-width: 720px;
-      margin: 0 auto 3rem;
-      min-height: 200px;
+      margin: 0 auto 1rem;
+      min-height: 120px;
     }
     .msg-carousel { position: relative; }
     .msg-slide {
       display: none;
       text-align: center;
-      padding: 1rem 2rem 2rem;
+      padding: 0.5rem 2rem 1rem;
       animation: msgFade 0.6s ease both;
     }
     .msg-slide.active { display: block; }
@@ -72,7 +75,7 @@
       display: flex;
       justify-content: center;
       gap: 0.5rem;
-      margin-top: 1.5rem;
+      margin-top: 0.75rem;
       flex-wrap: wrap;
     }
     .msg-dot {
@@ -103,7 +106,7 @@
     .msg-form-card {
       background: #fff;
       border: 1px solid var(--border);
-      padding: 2.5rem;
+      padding: 1.5rem 2rem;
       position: relative;
     }
     .msg-form-card::before {
@@ -120,7 +123,7 @@
       text-transform: uppercase;
       color: var(--gold);
       display: block;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.4rem;
     }
     .msg-form-intro {
       font-family: "Cormorant Garamond", serif;
@@ -128,24 +131,24 @@
       font-size: 1.05rem;
       color: var(--text-mid);
       line-height: 1.8;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.85rem;
     }
     .msg-input {
       display: block;
       width: 100%;
       border: 1px solid var(--border);
       background: var(--warm-white);
-      padding: 0.8rem 1rem;
+      padding: 0.6rem 1rem;
       font-family: "Cormorant Garamond", serif;
       font-size: 1.05rem;
       color: var(--charcoal);
       outline: none;
-      margin-bottom: 1rem;
+      margin-bottom: 0.65rem;
       transition: border-color 0.25s;
     }
     .msg-input::placeholder { color: var(--text-light); font-style: italic; }
     .msg-input:focus { border-color: var(--crimson); }
-    .msg-textarea { resize: vertical; min-height: 110px; }
+    .msg-textarea { resize: vertical; min-height: 70px; }
     .msg-submit-btn {
       background: transparent;
       border: 1px solid var(--crimson);
