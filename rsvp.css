@@ -1,0 +1,551 @@
+/* ── PAGE SHELL ──────────────────────────────────────── */
+body {
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  background: var(--warm-white);
+  color: var(--charcoal);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── NAV ────────────────────────────────────────────── */
+.rsvp-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 4rem;
+  background: rgba(255,250,245,0.97);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.rsvp-nav .nav-logo {
+  font-family: "Great Vibes", cursive;
+  font-size: 1.9rem;
+  color: var(--crimson);
+  text-decoration: none;
+}
+.rsvp-nav .nav-back {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-mid);
+  transition: color 0.25s;
+}
+.rsvp-nav .nav-back:hover { color: var(--crimson); }
+
+/* ── HERO BANNER ─────────────────────────────────────── */
+.rsvp-hero {
+  background-image: url("images/rsvp-bg.png");
+  background-size: cover;
+  background-position: center top;
+  position: relative;
+  padding: 6rem 2rem 5rem;
+  text-align: center;
+}
+.rsvp-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(55,8,14,0.83);
+}
+.rsvp-hero-inner { position: relative; z-index: 1; }
+.rsvp-hero-title {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(3.5rem, 9vw, 5.5rem);
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+.rsvp-hero-rule {
+  width: 55px;
+  height: 1px;
+  background: var(--gold);
+  margin: 1rem auto;
+}
+.rsvp-hero-sub {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.75);
+}
+
+/* ── MAIN AREA ───────────────────────────────────────── */
+.rsvp-main {
+  flex: 1;
+  padding: 4.5rem 2rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* ── STEPS ───────────────────────────────────────────── */
+.rsvp-step { display: none; width: 100%; max-width: 720px; }
+.rsvp-step.active { display: block; animation: stepIn 0.42s ease both; }
+.rsvp-step.leaving { animation: stepOut 0.22s ease both; }
+
+@keyframes stepIn  { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes stepOut { from { opacity: 1; transform: none; }             to { opacity: 0; transform: translateY(-10px); } }
+
+/* ── WHITE CARD ──────────────────────────────────────── */
+.rsvp-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 3rem;
+  width: 100%;
+  position: relative;
+}
+.rsvp-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--crimson), var(--gold));
+}
+
+/* ── TYPOGRAPHY HELPERS ──────────────────────────────── */
+.step-eye {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 0.6rem;
+}
+.step-head {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  color: var(--crimson);
+  margin-bottom: 0.5rem;
+}
+.step-rule {
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  margin-bottom: 2rem;
+}
+.step-sub {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.08rem;
+  color: var(--text-mid);
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
+}
+
+/* ── GOLD DIVIDER ────────────────────────────────────── */
+.gold-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 2rem 0;
+}
+
+/* ── STEP 1: SEARCH FORM ─────────────────────────────── */
+.name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.name-row input {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--warm-white);
+  padding: 0.85rem 1rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.05rem;
+  color: var(--charcoal);
+  outline: none;
+  transition: border-color 0.25s;
+}
+.name-row input::placeholder { color: var(--text-light); font-style: italic; }
+.name-row input:focus { border-color: var(--crimson); }
+
+/* Loading spinner */
+.search-btn.loading { position: relative; color: transparent !important; }
+.search-btn.loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  color: var(--crimson);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Stagger-in for match buttons and member cards */
+.match-btn   { opacity: 0; animation: stepIn 0.35s ease both; }
+.member-card { opacity: 0; animation: stepIn 0.4s  ease both; }
+
+/* Search button */
+.search-btn {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid var(--crimson);
+  color: var(--crimson);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  padding: 0.95rem 3rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.search-btn:hover:not(:disabled) { background: var(--crimson); color: #fff; }
+.search-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* Error message */
+.search-error {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  color: var(--crimson);
+  font-size: 0.95rem;
+  margin-top: 1rem;
+  min-height: 1.2em;
+}
+
+/* Deadline note */
+.deadline-note {
+  font-family: "Raleway", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 1.75rem;
+  display: block;
+}
+
+/* Closed message */
+.closed-msg {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.08rem;
+  color: var(--text-mid);
+  line-height: 1.85;
+}
+
+/* ── EMAIL INPUT ─────────────────────────────────────── */
+.email-row { margin-bottom: 1.5rem; }
+.email-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--warm-white);
+  padding: 0.8rem 1rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.05rem;
+  color: var(--charcoal);
+  outline: none;
+  margin-top: 0.4rem;
+  transition: border-color 0.25s;
+}
+.email-input::placeholder { color: var(--text-light); font-style: italic; }
+.email-input:focus { border-color: var(--crimson); }
+
+/* ── VERIFY IDENTITY NAME LIST ──────────────────────── */
+.verify-name-item {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--crimson);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.verify-name-item:last-child { border-bottom: none; }
+
+/* ── MATCH SELECTION BUTTONS ────────────────────────── */
+.match-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.match-btn:hover { border-color: var(--crimson); background: var(--cream); color: var(--crimson); }
+
+/* ── STEP 2: RSVP FORM ───────────────────────────────── */
+
+/* Member card */
+.member-card {
+  border: 1px solid var(--border);
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.25rem;
+  background: var(--warm-white);
+}
+.member-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--crimson);
+  margin-bottom: 1.1rem;
+}
+.member-name-input {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--crimson);
+  border: none;
+  border-bottom: 1px dashed rgba(139,26,43,0.3);
+  background: transparent;
+  outline: none;
+  width: 100%;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.2rem;
+  transition: border-color 0.2s;
+}
+.member-name-input:focus { border-bottom-color: var(--crimson); }
+.member-name-label {
+  font-family: "Raleway", sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+/* Event row */
+.event-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.event-row:last-child { border-bottom: none; }
+.event-label-wrap { flex: 1; }
+.event-label-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
+  color: var(--charcoal);
+}
+.event-label-date {
+  font-family: "Raleway", sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 0.1rem;
+}
+
+/* YES / NO toggle */
+.toggle-group {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+.toggle-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-light);
+  font-family: "Raleway", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.toggle-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+.toggle-btn.active {
+  background: var(--crimson);
+  border-color: var(--crimson);
+  color: #fff;
+}
+.toggle-btn.active-no {
+  background: var(--text-light);
+  border-color: var(--text-light);
+  color: #fff;
+}
+
+/* Additional guests section */
+.addl-section { margin-top: 2rem; }
+.addl-head {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--crimson);
+  margin-bottom: 0.4rem;
+}
+.addl-note {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  margin-bottom: 1.25rem;
+}
+.addl-guest-card {
+  border: 1px solid var(--border);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  background: var(--cream);
+}
+.addl-name-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--warm-white);
+  padding: 0.7rem 0.9rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
+  color: var(--charcoal);
+  outline: none;
+  margin-bottom: 1rem;
+  transition: border-color 0.25s;
+}
+.addl-name-input::placeholder { color: var(--text-light); font-style: italic; }
+.addl-name-input:focus { border-color: var(--crimson); }
+.addl-guest-num {
+  font-family: "Raleway", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+}
+
+/* Submit button */
+.submit-btn {
+  display: block;
+  width: 100%;
+  margin-top: 2rem;
+  background: transparent;
+  border: 1px solid var(--crimson);
+  color: var(--crimson);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  padding: 1.1rem 2rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+  text-align: center;
+}
+.submit-btn:hover:not(:disabled) { background: var(--crimson); color: #fff; }
+.submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* Back link */
+.back-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.92rem;
+  color: var(--text-mid);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--crimson); }
+
+/* ── STEP 3: CONFIRMATION ────────────────────────────── */
+.confirm-card {
+  text-align: center;
+  padding: 3.5rem 3rem;
+}
+.confirm-title {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(3rem, 7vw, 4.5rem);
+  color: var(--crimson);
+  margin-bottom: 1rem;
+}
+.confirm-msg {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--text-mid);
+  line-height: 1.9;
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+}
+.confirm-ornament {
+  font-size: 1.1rem;
+  color: var(--gold);
+  letter-spacing: 0.4em;
+  margin: 1.5rem 0;
+  display: block;
+}
+.confirm-contact {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+}
+.confirm-contact a { color: var(--crimson); text-decoration: none; }
+.confirm-contact a:hover { text-decoration: underline; }
+.home-btn {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid var(--crimson);
+  color: var(--crimson);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  padding: 0.95rem 3rem;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s;
+}
+.home-btn:hover { background: var(--crimson); color: #fff; }
+
+/* ── FOOTER ──────────────────────────────────────────── */
+.rsvp-footer {
+  background: var(--crimson-dark);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+.rsvp-footer .f-names {
+  font-family: "Great Vibes", cursive;
+  font-size: 2.4rem;
+  color: var(--gold-light);
+  margin-bottom: 0.3rem;
+}
+.rsvp-footer .f-date {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+}
+
+/* ── ALREADY RSVPED NOTICE ───────────────────────────── */
+.already-notice {
+  border: 1px solid var(--gold);
+  background: rgba(201,168,76,0.07);
+  padding: 1.5rem 1.75rem;
+  margin-top: 1.5rem;
+}
+.already-notice p {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text-mid);
+  line-height: 1.85;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .rsvp-nav { padding: 1rem 1.5rem; }
+  .rsvp-card { padding: 2rem 1.25rem; }
+  .confirm-card { padding: 2.5rem 1.25rem; }
+  .name-row { grid-template-columns: 1fr; }
+  .member-card { padding: 1.25rem; }
+  .toggle-btn { padding: 0.4rem 0.7rem; font-size: 0.65rem; }
+}
