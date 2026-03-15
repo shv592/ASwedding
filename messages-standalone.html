@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Messages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crimson: #8B1A2B; --crimson-dark: #5c0e1a;
+      --gold: #c9a84c; --gold-light: #e4c97e;
+      --cream: #fdf6ee; --warm-white: #fffaf5;
+      --charcoal: #2a2020; --text-mid: #5a4a42; --text-light: #9a8070;
+      --border: rgba(139,26,43,0.13);
+    }
+
+    body {
+      font-family: "Raleway", sans-serif;
+      font-weight: 300;
+      background: var(--cream);
+      color: var(--charcoal);
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    /* ── CAROUSEL ─────────────────────────────────────────── */
+    .msg-carousel-wrap {
+      position: relative;
+      max-width: 720px;
+      margin: 0 auto 3rem;
+      min-height: 200px;
+    }
+    .msg-carousel { position: relative; }
+    .msg-slide {
+      display: none;
+      text-align: center;
+      padding: 1rem 2rem 2rem;
+      animation: msgFade 0.6s ease both;
+    }
+    .msg-slide.active { display: block; }
+    @keyframes msgFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+    .msg-quote-mark {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 5rem;
+      color: var(--gold);
+      line-height: 0.5;
+      display: block;
+      margin-bottom: 1rem;
+      opacity: 0.4;
+    }
+    .msg-text {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--charcoal);
+      line-height: 1.85;
+      max-width: 580px;
+      margin: 0 auto 1.25rem;
+    }
+    .msg-name {
+      font-family: "Raleway", sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Dots */
+    .msg-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .msg-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 1px solid var(--gold);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .msg-dot.active { background: var(--gold); }
+
+    /* No messages placeholder */
+    .msg-empty {
+      text-align: center;
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-light);
+      padding: 2rem;
+    }
+
+    /* ── LEAVE A MESSAGE FORM ─────────────────────────────── */
+    .msg-form-wrap {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .msg-form-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      position: relative;
+    }
+    .msg-form-card::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--crimson), var(--gold));
+    }
+    .msg-form-eye {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    .msg-form-intro {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .msg-input {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--warm-white);
+      padding: 0.8rem 1rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+      outline: none;
+      margin-bottom: 1rem;
+      transition: border-color 0.25s;
+    }
+    .msg-input::placeholder { color: var(--text-light); font-style: italic; }
+    .msg-input:focus { border-color: var(--crimson); }
+    .msg-textarea { resize: vertical; min-height: 110px; }
+    .msg-submit-btn {
+      background: transparent;
+      border: 1px solid var(--crimson);
+      color: var(--crimson);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.5rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    .msg-submit-btn:hover:not(:disabled) { background: var(--crimson); color: #fff; }
+    .msg-submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .msg-form-status {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      margin-top: 0.9rem;
+      min-height: 1.2em;
+      color: var(--text-mid);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CAROUSEL -->
+  <div class="msg-carousel-wrap" id="msg-carousel-wrap">
+    <div class="msg-carousel" id="msg-carousel"></div>
+    <div class="msg-dots"     id="msg-dots"></div>
+  </div>
+
+  <!-- LEAVE A MESSAGE FORM -->
+  <div class="msg-form-wrap">
+    <div class="msg-form-card">
+      <span class="msg-form-eye">Leave a Note</span>
+      <p class="msg-form-intro">Share your wishes, advice, or a favourite memory with Shivani &amp; Akshay.</p>
+      <input  type="text"     id="msg-form-name" class="msg-input"             placeholder="Your name (or leave blank to be anonymous)"/>
+      <textarea               id="msg-form-text" class="msg-input msg-textarea" rows="4" placeholder="Write your message here&#8230;"></textarea>
+      <button class="msg-submit-btn" id="msg-submit-btn" onclick="submitMessage()">Send Message</button>
+      <div class="msg-form-status" id="msg-form-status"></div>
+    </div>
+  </div>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWGnHQ9fE8tRoLolgLiuykcAC9IholKxzBrjJUidkUtIgFTYImMBKKMHqArN01oHk/exec';
+
+  let _msgTimer = null;
+  let _msgIdx   = 0;
+
+  // ── Load & display messages ───────────────────────────────
+  function initMessages() {
+    fetch(APPS_SCRIPT_URL + '?action=getMessages', { credentials: 'omit' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var msgs = data.messages || [];
+        if (msgs.length === 0) {
+          document.getElementById('msg-carousel').innerHTML =
+            '<p class="msg-empty">Be the first to leave a message for the couple!</p>';
+          return;
+        }
+        buildCarousel(msgs);
+      })
+      .catch(function() {});
+  }
+
+  function buildCarousel(msgs) {
+    var carousel = document.getElementById('msg-carousel');
+    var dotsEl   = document.getElementById('msg-dots');
+    if (!carousel || !dotsEl) return;
+
+    msgs.forEach(function(m, i) {
+      var slide = document.createElement('div');
+      slide.className = 'msg-slide' + (i === 0 ? ' active' : '');
+      slide.innerHTML =
+        '<span class="msg-quote-mark">\u201C</span>' +
+        '<p class="msg-text">' + escHtml(m.message) + '</p>' +
+        '<span class="msg-name">\u2014 ' + escHtml(m.name) + '</span>';
+      carousel.appendChild(slide);
+
+      var dot = document.createElement('button');
+      dot.className = 'msg-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Message ' + (i + 1));
+      dot.addEventListener('click', function() { goToSlide(i, msgs.length); });
+      dotsEl.appendChild(dot);
+    });
+
+    if (msgs.length > 1) {
+      _msgTimer = setInterval(function() {
+        goToSlide((_msgIdx + 1) % msgs.length, msgs.length);
+      }, 5000);
+    }
+  }
+
+  function goToSlide(idx, total) {
+    var slides = document.querySelectorAll('.msg-slide');
+    var dots   = document.querySelectorAll('.msg-dot');
+    if (!slides.length) return;
+    slides[_msgIdx].classList.remove('active');
+    dots[_msgIdx].classList.remove('active');
+    _msgIdx = (idx + total) % total;
+    slides[_msgIdx].classList.add('active');
+    dots[_msgIdx].classList.add('active');
+    if (_msgTimer) {
+      clearInterval(_msgTimer);
+      _msgTimer = setInterval(function() { goToSlide(_msgIdx + 1, total); }, 5000);
+    }
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ── Submit a new message ──────────────────────────────────
+  function submitMessage() {
+    var name     = (document.getElementById('msg-form-name').value || '').trim();
+    var text     = (document.getElementById('msg-form-text').value || '').trim();
+    var statusEl = document.getElementById('msg-form-status');
+    var btn      = document.getElementById('msg-submit-btn');
+
+    if (!text) { statusEl.textContent = 'Please write a message before sending.'; return; }
+
+    btn.disabled = true;
+    statusEl.textContent = '';
+
+    var payload = { name: name || 'Anonymous', message: text };
+    fetch(APPS_SCRIPT_URL + '?action=submitMessage&data=' + encodeURIComponent(JSON.stringify(payload)), { credentials: 'omit' })
+      .then(function(r) { return r.json(); })
+      .then(function() {
+        document.getElementById('msg-form-name').value = '';
+        document.getElementById('msg-form-text').value = '';
+        btn.disabled = false;
+        statusEl.textContent = 'Your message has been sent \u2014 thank you! \u2665';
+      })
+      .catch(function() {
+        btn.disabled = false;
+        statusEl.textContent = 'Something went wrong. Please try again.';
+      });
+  }
+
+  // Load on page ready
+  window.addEventListener('DOMContentLoaded', initMessages);
+</script>
+
+</body>
+</html>
