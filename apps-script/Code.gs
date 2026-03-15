@@ -390,7 +390,7 @@ function sendConfirmationEmail(email, submittedBy, members, additional) {
 
   <!-- HEADER -->
   <tr>
-    <td style="background:#6b1220;background-image:linear-gradient(rgba(60,6,14,0.72),rgba(60,6,14,0.72)),url('https://shv592.github.io/ASwedding/images/gate-bg.png');background-size:cover;background-position:center;padding:52px 40px 44px;text-align:center;">
+    <td style="background:#6b1220;background-image:linear-gradient(rgba(60,6,14,0.72),rgba(60,6,14,0.72)),url('https://akshayandshivani.ca/images/gate-bg.png');background-size:cover;background-position:center;padding:52px 40px 44px;text-align:center;">
       <div style="width:100px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:0 auto 22px;"></div>
       <div style="font-family:'Great Vibes',Georgia,serif;font-size:56px;color:#e4c97e;line-height:1.1;margin-bottom:8px;">Shivani &amp; Akshay</div>
       <div style="font-family:Georgia,serif;font-size:11px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:22px;">August 21 &ndash; 22, 2026 &middot; Vaughan, Ontario</div>
