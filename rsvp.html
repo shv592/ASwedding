@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RSVP — Shivani &amp; Akshay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css?v=1"/>
+  <link rel="stylesheet" href="rsvp.css"/>
+</head>
+<body>
+  <div id="page-veil" style="position:fixed;inset:0;z-index:99998;background:#fffaf5;opacity:1;transition:opacity 0.45s ease;pointer-events:none;"></div>
+
+  <!-- NAV -->
+  <nav class="rsvp-nav">
+    <a href="https://www.akshayandshivani.ca" class="nav-logo">Shivani &amp; Akshay</a>
+    <a href="https://www.akshayandshivani.ca" class="nav-back">&#8592; Back to Main Site</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="rsvp-hero">
+    <div class="rsvp-hero-inner">
+      <div class="rsvp-hero-title">RSVP</div>
+      <div class="rsvp-hero-rule"></div>
+      <p class="rsvp-hero-sub">Shivani &amp; Akshay &middot; August 21&ndash;22, 2026</p>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="rsvp-main">
+
+    <!-- ── STEP 1: SEARCH ─────────────────────────────────── -->
+    <div class="rsvp-step active" id="step-search">
+      <div class="rsvp-card">
+        <span class="step-eye">Find Your Invitation</span>
+        <div class="step-head">Enter Your Name</div>
+        <div class="step-rule"></div>
+
+        <!-- Closed state (hidden unless past deadline) -->
+        <div id="closed-state" style="display:none;">
+          <p class="closed-msg">RSVP is now closed. If you have questions, please reach out at
+            <a href="mailto:shivani.akshaypathak@hotmail.com" style="color:var(--crimson)">shivani.akshaypathak@hotmail.com</a>.
+          </p>
+        </div>
+
+        <!-- Open state -->
+        <div id="open-state">
+          <p class="step-sub" style="margin-bottom:1.25rem;">You can search by first name, last name, or both.</p>
+          <div class="name-row">
+            <input type="text" id="inp-first" placeholder="First Name (optional)" autocomplete="given-name"/>
+            <input type="text" id="inp-last"  placeholder="Last Name (optional)"  autocomplete="family-name"/>
+          </div>
+          <button class="search-btn" id="search-btn" onclick="searchGuest(event)">Find My Invitation</button>
+          <div class="search-error" id="search-error"></div>
+          <span class="deadline-note">Please RSVP by April 15, 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 1b: VERIFY IDENTITY ──────────────────────── -->
+    <div class="rsvp-step" id="step-verify">
+      <div class="rsvp-card">
+        <span class="step-eye">Confirm Your Invitation</span>
+        <div class="step-head">Is this your family?</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">We found the following family members on the guest list. You will be able to RSVP on behalf of your whole family — please confirm this is the right group.</p>
+        <div id="verify-names"></div>
+        <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
+          <button class="search-btn" onclick="confirmIdentity(true)">Yes, this is my family</button>
+          <button class="search-btn" onclick="confirmIdentity(false)" style="border-color:var(--text-light);color:var(--text-light);">No, this isn&rsquo;t me</button>
+        </div>
+        <div style="text-align:center;margin-top:1.5rem;">
+          <span class="back-link" onclick="showStep('step-search')">&#8592; Search again</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 1c: MULTIPLE MATCHES ──────────────────────── -->
+    <div class="rsvp-step" id="step-select">
+      <div class="rsvp-card">
+        <span class="step-eye">Select Your Name</span>
+        <div class="step-head">We found a few matches</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">Please select your name from the list below.</p>
+        <div id="matches-container"></div>
+        <div style="text-align:center;margin-top:1.5rem;">
+          <span class="back-link" onclick="showStep('step-search')">&#8592; Search again</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: RSVP FORM ──────────────────────────────── -->
+    <div class="rsvp-step" id="step-form">
+      <div class="rsvp-card">
+        <div class="step-head" id="form-welcome">Welcome!</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">Please RSVP for each member of your party.</p>
+        <div class="email-row">
+          <label class="member-name-label" for="inp-email">Your Email Address (optional)</label>
+          <input type="email" id="inp-email" class="email-input" placeholder="email@example.com" autocomplete="email"/>
+        </div>
+        <div class="gold-rule"></div>
+
+        <!-- Member cards injected here -->
+        <div id="members-container"></div>
+
+        <!-- Additional guests injected here -->
+        <div id="addl-container"></div>
+
+        <button class="submit-btn" id="submit-btn" onclick="collectAndSubmit()">Submit RSVP</button>
+        <div style="text-align:center">
+          <span class="back-link" onclick="showStep('step-search')">&#8592; Search again</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 2b: LEAVE A MESSAGE (shown if all declined) ── -->
+    <div class="rsvp-step" id="step-message">
+      <div class="rsvp-card">
+        <span class="step-eye">A Note for the Couple</span>
+        <div class="step-head">Leave a Message</div>
+        <div class="step-rule"></div>
+        <p class="step-sub">We&rsquo;re so sorry you can&rsquo;t join us. We&rsquo;d love to hear from you — leave Shivani &amp; Akshay a message, some advice, or your well wishes.</p>
+        <div style="margin-bottom:1rem;">
+          <label class="member-name-label" for="rsvp-msg-name">Your Name</label>
+          <input type="text" id="rsvp-msg-name" class="email-input" placeholder="Pre-filled from your RSVP, or edit freely"/>
+        </div>
+        <div style="margin-bottom:1.5rem;">
+          <label class="member-name-label" for="rsvp-msg-text">Your Message</label>
+          <textarea id="rsvp-msg-text" class="email-input" rows="5" style="resize:vertical;" placeholder="Share your wishes, a favourite memory, or some advice for the couple&#8230;"></textarea>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <button class="search-btn" id="rsvp-msg-btn" onclick="submitRsvpMessage()">Send Message</button>
+          <button class="search-btn" onclick="showStep('step-confirm')" style="border-color:var(--text-light);color:var(--text-light);">Skip</button>
+        </div>
+        <div class="search-error" id="rsvp-msg-error" style="margin-top:1rem;"></div>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: CONFIRMATION ───────────────────────────── -->
+    <div class="rsvp-step" id="step-confirm">
+      <div class="rsvp-card confirm-card">
+        <div class="confirm-title">Thank You!</div>
+        <div class="gold-rule" style="max-width:120px;margin:0 auto 1.5rem;"></div>
+        <p class="confirm-msg">Your RSVP has been received. We can&rsquo;t wait to celebrate with you!</p>
+        <span class="confirm-ornament">&#10022; &nbsp; &#10022; &nbsp; &#10022;</span>
+        <p class="confirm-contact">Questions? <a href="mailto:shivani.akshaypathak@hotmail.com">shivani.akshaypathak@hotmail.com</a></p>
+        <a href="index.html" class="home-btn">Back to Main Site</a>
+      </div>
+    </div>
+
+  </div><!-- /.rsvp-main -->
+
+  <!-- FOOTER -->
+  <footer class="rsvp-footer">
+    <div class="f-names">Shivani &amp; Akshay</div>
+    <div class="f-date">August 21 &ndash; 22, 2026 &middot; Vaughan, Ontario</div>
+  </footer>
+
+<script src="rsvp.js"></script>
+
+</body>
+</html>

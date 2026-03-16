@@ -426,7 +426,7 @@
           </div>
           <button class="search-btn" id="search-btn" onclick="searchGuest(event)">Find My Invitation</button>
           <div class="search-error" id="search-error"></div>
-          <span class="deadline-note">Please RSVP by April 15, 2026</span>
+          <span class="deadline-note">Please RSVP by April 30, 2026</span>
         </div>
       </div>
     </div>
@@ -509,7 +509,7 @@
     <!-- ── STEP 3: CONFIRMATION ───────────────────────────── -->
     <div class="rsvp-step" id="step-confirm">
       <div class="rsvp-card confirm-card">
-        <div class="confirm-title">Thank You!</div>
+        <div class="confirm-title" id="confirm-title">Thank You!</div>
         <div class="gold-rule" style="max-width:120px;margin:0 auto 1.5rem;"></div>
         <p class="confirm-msg">Your RSVP has been received. We can&rsquo;t wait to celebrate with you!</p>
         <span class="confirm-ornament">&#10022; &nbsp; &#10022; &nbsp; &#10022;</span>
@@ -817,7 +817,11 @@ function collectAndSubmit() {
         if (checkAllDeclined()) {
           document.getElementById('rsvp-msg-name').value = (_groupData.members[0].firstName + ' ' + _groupData.members[0].lastName).trim();
           showStep('step-message');
-        } else { showStep('step-confirm'); }
+        } else {
+          var firstName = _pendingWelcomeName ? _pendingWelcomeName.split(' ')[0] : '';
+          if (firstName) document.getElementById('confirm-title').textContent = 'Thank You, ' + firstName + '!';
+          showStep('step-confirm');
+        }
       } else {
         submitBtn.textContent = 'Submit RSVP';
         submitBtn.disabled = false;
